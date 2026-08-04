@@ -182,3 +182,20 @@
     border-right-color: var(--border);
   }
 }
+
+/* ---------------------------------------------------------- */
+
+.maze-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.maze-rows {
+  display: flex;
+  img {
+      width: clamp(16px, 3vw, 128px);
+      height: clamp(16px, 3vw, 128px);
+      image-rendering: pixelated;
+  }
+}

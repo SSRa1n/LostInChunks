@@ -1,16 +1,16 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
 import './App.css'
 
 import { generateMaze } from './lib/generate_maze'
 import RenderMaze from './lib/render_maze'
+import { generateObstacles } from './lib/generate_obstacles'
 
 function App() {
   const [count, setCount] = useState(0)
 
-  const maze = generateMaze(16, 16)
+  const maze = generateMaze(11, 9)
+
+  generateObstacles(maze)
 
   return (
     <>
@@ -20,9 +20,9 @@ function App() {
           className="counter"
           onClick={() => setCount((count) => count + 1)}
         >
-          Count is {count}
+          Maze #{count}
         </button>
-        <section style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <section className="maze-container">
           <RenderMaze maze={maze} />
         </section>
       </section>

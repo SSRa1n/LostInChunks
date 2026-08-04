@@ -82,5 +82,8 @@ export function generateMaze(
         }
     }
 
+    maze[height - 2][1] = -1;
+    maze[1][width - 2] = -2;
+
     return maze;
 }

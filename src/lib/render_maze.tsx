@@ -7,12 +7,15 @@ type RenderMazeProps = {
 
 export default function RenderMaze({ maze }: RenderMazeProps): JSX.Element {
     console.log(maze)
-    // for (const row of maze) {
-    //     console.log(row.map((tile) => (tile === 0 ? 'O' : '#')).join('  '))
-    // }
 
     return <>{maze.map((row) => {
-        return <div style={{ display: 'flex' }}>{row.map((tile) => tile === 0 ? <img src="/suspicious_sand_3.png" alt="Void"/> : <img src="/lime_concrete.png" alt="Path" />)}</div>
+        return <div className="maze-rows">
+                    {row.map((tile) => tile === 0 ? 
+                    <img src="/blocks/suspicious_sand_3.png" alt="Void"/> : 
+                    tile === -1 ? <img src="/blocks/beacon.png" alt="Start" /> : 
+                    tile === -2 ? <img src="/blocks/gold_block.png" alt="Goal" /> : 
+                    <img src="/blocks/lime_concrete.png" alt="Path" />)}
+                </div>
     })}</>
 
 }

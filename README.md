@@ -1,75 +1,76 @@
-# React + TypeScript + Vite
+# LostInChunks
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+LostInChunks is a React + TypeScript web app for exploring Minecraft-inspired pathfinding.
+It generates a maze-like course with obstacles and renders the grid visually so you can
+experiment with routes from a start point to a destination.
 
-Currently, two official plugins are available:
+The project is built with Vite and keeps the implementation lightweight so it is easy to
+iterate on maze generation, obstacle placement, and pathfinding logic.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Features
 
-## React Compiler
+- Generates a randomized maze grid with obstacles.
+- Renders the maze in the browser using React components.
+- Uses a Minecraft-inspired visual style with block textures.
+- Built with React, TypeScript, and Vite for fast local development.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Tech Stack
 
-## Expanding the ESLint configuration
+- React
+- TypeScript
+- Vite
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Getting Started
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Prerequisites
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- Node.js 18 or newer
+- npm
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Install Dependencies
 
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Run the Development Server
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm run dev
 ```
+
+Open the local URL shown in the terminal to view the app.
+
+### Build for Production
+
+```bash
+npm run build
+```
+
+### Preview the Production Build
+
+```bash
+npm run preview
+```
+
+## Scripts
+
+- `npm run dev` - start the Vite development server
+- `npm run build` - type-check the app and create a production build
+- `npm run lint` - run ESLint across the project
+- `npm run preview` - preview the production build locally
+
+## Project Structure
+
+- `src/App.tsx` - main app component
+- `src/lib/generate_maze.tsx` - maze generation logic
+- `src/lib/render_maze.tsx` - maze rendering component
+- `src/main.tsx` - application entry point
+- `src/index.css` - global styles
+
+## Notes
+
+The current implementation focuses on maze generation and rendering. If you extend the
+project further, a natural next step is adding explicit start/end points, path cost scoring,
+and a shortest-path or least-cost route visualizer.
+

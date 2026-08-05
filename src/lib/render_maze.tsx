@@ -45,7 +45,7 @@ export default function RenderMaze({
                             block !== BLOCKS.BLOCK_GOAL
                         ) {
                             if (pathSet.has(key)) {
-                                image = "/blocks/diamond_block.png";
+                                image = "/blocks/lime_concrete.png";
                                 alt = "Solution Path";
                             } else if (exploredSet.has(key)) {
                                 image = "/blocks/light_blue_concrete.png";

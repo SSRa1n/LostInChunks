@@ -84,7 +84,7 @@ export class MazeProblem implements SearchProblem<MazeState, MazeAction> {
     }
 
     stepCost(from: MazeState, to: MazeState, action: MazeAction): number {
-        return 1;
+        return this.maze[to.y][to.x].cost_onroad;
     }
 
     stateKey(state: MazeState): string {

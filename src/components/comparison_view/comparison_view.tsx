@@ -16,7 +16,7 @@ export default function ComparisonView() {
     <div className={styles.container}>
       
       <div className={styles.util_container}>
-        <button type="button" onClick={() =>  setMasterMaze(createMaze())}>
+        <button type="button" onClick={() =>  setMasterMaze(createMaze())} className="counter">
           Regenerate Maze
         </button>
       </div>

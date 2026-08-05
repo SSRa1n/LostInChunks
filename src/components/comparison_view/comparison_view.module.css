@@ -1,0 +1,15 @@
+.container {
+    padding: 2rem;
+    text-align: center;
+}
+
+.util_container {
+    margin-bottom: 1.5rem;
+}
+
+.comparison_container {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    flex-wrap: wrap;
+}

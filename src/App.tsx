@@ -1,31 +1,11 @@
-import { useState } from 'react'
 import './App.css'
-
-import { generateMaze } from './lib/generate_maze'
-import RenderMaze from './lib/render_maze'
-import { generateObstacles } from './lib/generate_obstacles'
+import ComparisonPage from './pages/comparison_page'
 
 function App() {
-  const [count, setCount] = useState(0)
-
-  const maze = generateMaze(11, 9)
-
-  generateObstacles(maze)
 
   return (
     <>
-      <section id="center">
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Maze #{count}
-        </button>
-        <section className="maze-container">
-          <RenderMaze maze={maze} />
-        </section>
-      </section>
+      <ComparisonPage />
     </>
   )
 }

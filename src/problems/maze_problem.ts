@@ -72,7 +72,7 @@ export class MazeProblem implements SearchProblem<MazeState, MazeAction> {
 
             const block = this.maze[ny][nx];
 
-            if (block.name !== BLOCKS.BLOCK_VOID.name) {
+            if (block.cost_onroad < Infinity) {
                 successors.push({
                     state: { x: nx, y: ny },
                     action: dir.action,

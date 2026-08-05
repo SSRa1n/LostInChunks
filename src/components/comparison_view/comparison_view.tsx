@@ -1,14 +1,12 @@
 import { useState } from 'react';
 import SingularView from '../singular_view/singular_view';
 import { generateMaze } from '../../lib/generate_maze';
-import { generateObstacles } from '../../lib/generate_obstacles';
 
 import styles from './comparison_view.module.css';
 
 export default function ComparisonView() {
   const createMaze = () => {
     const m = generateMaze(15, 11);
-    generateObstacles(m);
     return m;
   };
 

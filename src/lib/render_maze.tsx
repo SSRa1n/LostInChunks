@@ -1,7 +1,8 @@
-import { type JSX } from 'react';
-import type { Maze } from './generate_maze';
-import { BLOCKS } from './blocks';
-import type { MazeState } from '../problems/maze_problem';
+import { type JSX, useState } from "react";
+import type { Maze } from "./generate_maze";
+import { BLOCKS } from "./blocks";
+import type { MazeState } from "../problems/maze_problem";
+import { calculateCost } from "./calculate_cost";
 
 type RenderMazeProps = {
     maze: Maze;
@@ -14,80 +15,60 @@ export default function RenderMaze({
     explored = [],
     path = [],
 }: RenderMazeProps): JSX.Element {
+    const [showLabels, setShowLabels] = useState(false);
+
     const exploredSet = new Set(explored.map((s) => `${s.x},${s.y}`));
     const pathSet = new Set(path.map((s) => `${s.x},${s.y}`));
 
+    const costMap = calculateCost(maze);
+
     return (
         <>
+            <button
+                onClick={() => setShowLabels((prev) => !prev)}
+                className="counter"
+            >
+                {showLabels ? "Hide Labels" : "Show Labels"}
+            </button>
+
             {maze.map((row, y) => (
                 <div className="maze-rows" key={y}>
                     {row.map((block, x) => {
                         const key = `${x},${y}`;
-                        const isPath = pathSet.has(key);
-                        const isExplored = exploredSet.has(key);
 
-                        if (block === BLOCKS.BLOCK_VOID) {
-                            return (
-                                <img
-                                    key={key}
-                                    src={block.filename}
-                                    className="maze-block"
-                                    alt={block.name}
-                                />
-                            );
-                        }
+                        let image = block.filename;
+                        let alt = block.name;
 
-                        if (block === BLOCKS.BLOCK_START) {
-                            return (
-                                <img
-                                    key={key}
-                                    src={block.filename}
-                                    className="maze-block"
-                                    alt={block.name}
-                                />
-                            );
-                        }
-
-                        if (block === BLOCKS.BLOCK_GOAL) {
-                            return (
-                                <img
-                                    key={key}
-                                    src={block.filename}
-                                    className="maze-block"
-                                    alt={block.name}
-                                />
-                            );
-                        }
-
-                        if (isPath) {
-                            return (
-                                <img
-                                    key={key}
-                                    src="/blocks/diamond_block.png"
-                                    className="maze-block"
-                                    alt="Solution Path"
-                                />
-                            );
-                        }
-
-                        if (isExplored) {
-                            return (
-                                <img
-                                    key={key}
-                                    src="/blocks/light_blue_concrete.png"
-                                    className="maze-block"
-                                    alt="Explored"
-                                />
-                            );
+                        if (
+                            block !== BLOCKS.BLOCK_VOID &&
+                            block !== BLOCKS.BLOCK_START &&
+                            block !== BLOCKS.BLOCK_GOAL
+                        ) {
+                            if (pathSet.has(key)) {
+                                image = "/blocks/diamond_block.png";
+                                alt = "Solution Path";
+                            } else if (exploredSet.has(key)) {
+                                image = "/blocks/light_blue_concrete.png";
+                                alt = "Explored";
+                            }
                         }
 
                         return (
-                            <img
-                                key={key}
-                                src={block.filename}
-                                className="maze-block"
-                                alt={block.name}
-                            />
+                            <div className="maze-cell" key={key}>
+                                <img
+                                    src={image}
+                                    className="maze-block"
+                                    alt={alt}
+                                />
+
+                                {showLabels && (
+                                    <span className="cost-label">
+                                        {costMap[y][x].cost === Infinity
+                                            ? "∞"
+                                            : costMap[y][x].cost}
+                                    </span>
+                                )}
+                            </div>
                         );
                     })}
                 </div>

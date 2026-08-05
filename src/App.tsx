@@ -3,14 +3,11 @@ import './App.css'
 
 import { generateMaze } from './lib/generate_maze'
 import RenderMaze from './lib/render_maze'
-import { generateObstacles } from './lib/generate_obstacles'
 
 function App() {
   const [count, setCount] = useState(0)
 
   const maze = generateMaze(11, 9)
-
-  generateObstacles(maze)
 
   return (
     <>

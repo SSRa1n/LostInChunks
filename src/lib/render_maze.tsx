@@ -1,5 +1,6 @@
 import { type JSX } from 'react'
 import type { Maze } from './generate_maze'
+import { calculateCost } from './calculate_cost'
 
 type RenderMazeProps = {
     maze: Maze

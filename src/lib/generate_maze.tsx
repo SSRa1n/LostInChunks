@@ -1,7 +1,6 @@
-export type Maze = number[][];
+import { Block, BLOCKS } from "./blocks";
 
-export const VOID = 0;
-export const PATH = 1;
+export type Maze = Block[][];
 
 export function generateMaze(
     width: number,
@@ -14,7 +13,7 @@ export function generateMaze(
 
     const maze: Maze = Array.from(
         { length: height },
-        () => Array(width).fill(VOID)
+        () => Array(width).fill(BLOCKS.BLOCK_VOID)
     );
 
     function shuffle<T>(arr: T[]): T[] {
@@ -34,7 +33,7 @@ export function generateMaze(
 
     function carve(x: number, y: number) {
 
-        maze[y][x] = PATH;
+        maze[y][x] = BLOCKS.BLOCK_PATH;
 
         for (const [dx, dy] of shuffle([...directions])) {
 
@@ -50,11 +49,11 @@ export function generateMaze(
                 continue;
             }
 
-            if (maze[ny][nx] === PATH)
+            if (maze[ny][nx] === BLOCKS.BLOCK_PATH)
                 continue;
 
             // remove wall
-            maze[y + dy / 2][x + dx / 2] = PATH;
+            maze[y + dy / 2][x + dx / 2] = BLOCKS.BLOCK_PATH;
 
             carve(nx, ny);
         }
@@ -65,25 +64,25 @@ export function generateMaze(
     for (let y = 1; y < height - 1; y++) {
         for (let x = 1; x < width - 1; x++) {
 
-            if (maze[y][x] !== VOID)
+            if (maze[y][x] !== BLOCKS.BLOCK_VOID)
                 continue;
 
             const vertical =
-                maze[y - 1][x] === PATH &&
-                maze[y + 1][x] === PATH;
+                maze[y - 1][x] === BLOCKS.BLOCK_PATH &&
+                maze[y + 1][x] === BLOCKS.BLOCK_PATH;
 
             const horizontal =
-                maze[y][x - 1] === PATH &&
-                maze[y][x + 1] === PATH;
+                maze[y][x - 1] === BLOCKS.BLOCK_PATH &&
+                maze[y][x + 1] === BLOCKS.BLOCK_PATH;
 
             if ((vertical || horizontal) && Math.random() < 0.1) {
-                maze[y][x] = PATH;
+                maze[y][x] = BLOCKS.BLOCK_PATH;
             }
         }
     }
 
-    maze[height - 2][1] = -1;
-    maze[1][width - 2] = -2;
+    maze[height - 2][1] = BLOCKS.BLOCK_START;
+    maze[1][width - 2] = BLOCKS.BLOCK_GOAL;
 
     return maze;
 }

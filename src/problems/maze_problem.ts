@@ -1,5 +1,6 @@
 import type { SearchProblem } from "../core/search_problem";
-import { PATH, VOID, type Maze } from "../lib/generate_maze";
+import type { Maze } from "../lib/generate_maze";
+import { BLOCKS } from "../lib/blocks";
 
 export interface MazeState {
     readonly x: number;
@@ -39,8 +40,10 @@ export class MazeProblem implements SearchProblem<MazeState, MazeAction> {
 
         for (let y = 0; y < maze.length; y++) {
             for (let x = 0; x < maze[y].length; x++) {
-                if (maze[y][x] === -1) start = { x, y };
-                if (maze[y][x] === -2) goal = { x, y };
+                const block = maze[y][x];
+
+                if (block.name === BLOCKS.BLOCK_START.name) start = { x, y };
+                if (block.name === BLOCKS.BLOCK_GOAL.name) goal = { x, y };
             }
         }
 
@@ -67,9 +70,9 @@ export class MazeProblem implements SearchProblem<MazeState, MazeAction> {
                 continue;
             }
 
-            const cell = this.maze[ny][nx];
+            const block = this.maze[ny][nx];
 
-            if (cell !== VOID) {
+            if (block.name !== BLOCKS.BLOCK_VOID.name) {
                 successors.push({
                     state: { x: nx, y: ny },
                     action: dir.action,

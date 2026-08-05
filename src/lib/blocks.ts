@@ -35,7 +35,7 @@ export const BLOCKS = {
     BLOCK_CACTUS : new Block('Cactus', '/blocks/cactus.png', Infinity, 8, true, 0.05, 0.1, 0, 0),
     BLOCK_HONEY : new Block('Honey', '/blocks/honey.png', 6, 0, true, 0.25, 0, 0.5, 0),
     BLOCK_MAGMA : new Block('Magma', '/blocks/magma.png', Infinity, 16, true, 0.05, 0.1, 0, 0.5),
-    BLOCK_MAGMA_ZOMBIE : new Block('Magma Zombie', '/blocks/magma.png', 16, 8),
     BLOCK_LAVA : new Block('Lava', '/blocks/lava.png', Infinity, 16, true, 0.05, 0.1, 0, 0.5),
+    BLOCK_MAGMA_ZOMBIE : new Block('Magma Zombie', '/blocks/magma.png', 16, 8),
     BLOCK_LAVA_ZOMBIE : new Block('Lava Zombie', '/blocks/lava.png', 16, 8)
 } as const

@@ -1,0 +1,28 @@
+.page-footer {
+    background-color: rgba(0, 0, 0, 0.25);
+    color: aliceblue;
+    padding: 20px 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 8px;
+}
+
+.footer-links a {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font: inherit;
+    color: aliceblue;
+    text-decoration: none;
+}
+.footer-links a:hover {
+    text-decoration: underline;
+}

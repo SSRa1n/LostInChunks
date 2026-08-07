@@ -7,9 +7,10 @@ import styles from './singular_view.module.css';
 type SingularViewProps = {
     maze: Maze;
     defaultAlgorithm?: AlgorithmType;
+    renderCost?: boolean;
 };
 
-export default function SingularView({ maze, defaultAlgorithm = 'astar' }: SingularViewProps) {
+export default function SingularView({ maze, defaultAlgorithm = 'astar', renderCost = false }: SingularViewProps) {
     const {
         algorithmType,
         setAlgorithmType,
@@ -45,6 +46,7 @@ export default function SingularView({ maze, defaultAlgorithm = 'astar' }: Singu
                     maze={maze} 
                     explored={animatedExplored} 
                     path={displayedPath} 
+                    renderCost={renderCost}
                 />
             </section>
         </div>

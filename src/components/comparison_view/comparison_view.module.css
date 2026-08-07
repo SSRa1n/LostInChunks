@@ -4,7 +4,11 @@
 }
 
 .util_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin-bottom: 1.5rem;
+    gap: 1rem;
 }
 
 .comparison_container {

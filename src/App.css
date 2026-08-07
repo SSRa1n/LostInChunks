@@ -194,8 +194,8 @@
 .maze-rows {
   display: flex;
   img {
-      width: clamp(16px, 3vw, 128px);
-      height: clamp(16px, 3vw, 128px);
+      width: clamp(16px, 2.5vw, 128px);
+      height: clamp(16px, 2.5vw, 128px);
       image-rendering: pixelated;
   }
 }

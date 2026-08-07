@@ -11,6 +11,7 @@ export default function ComparisonView() {
   };
 
   const [masterMaze, setMasterMaze] = useState(createMaze);
+  const [showLabels, setShowLabels] = useState(false);
 
   return (
     <div className={styles.container}>
@@ -19,17 +20,25 @@ export default function ComparisonView() {
         <button type="button" onClick={() =>  setMasterMaze(createMaze())} className="counter">
           Regenerate Maze
         </button>
+        <button
+                onClick={() => setShowLabels((prev) => !prev)}
+                className="counter"
+            >
+                {showLabels ? "Hide Labels" : "Show Labels"}
+            </button>
       </div>
 
       <div className={styles.comparison_container}>
         <SingularView 
           maze={masterMaze} 
           defaultAlgorithm="dfs" 
+          renderCost={showLabels}
         />
 
         <SingularView 
           maze={masterMaze} 
           defaultAlgorithm="astar" 
+          renderCost={showLabels}
         />
       </div>
     </div>

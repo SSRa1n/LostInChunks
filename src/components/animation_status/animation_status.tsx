@@ -20,14 +20,14 @@ export default function AnimationStatus({
             <span>
                 {!found
                     ? 'No Path'
-                    : status === 'playing'
+                    : status === 'playing' && (animationIndex < maxSteps)
                     ? 'Exploring...'
                     : status === 'paused'
                     ? 'Paused'
                     : 'Finished'}
             </span>
             {' | '}
-            <span>Explored: {animationIndex} / {maxSteps}</span>
+            <span>Explored: {(animationIndex < maxSteps) ? animationIndex : maxSteps} / {maxSteps}</span>
             {' | '}
             <span>Path: {pathLength}</span>
         </div>

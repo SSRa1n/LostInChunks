@@ -5,6 +5,7 @@ type AnimationControllerProps = {
     speedMs: number;
     animationIndex: number;
     maxSteps: number;
+    onlySeekBar?: boolean;
     
     onPlayPause: () => void;
     onSpeedChange: (speed: number) => void;
@@ -16,6 +17,7 @@ export default function AnimationController({
     speedMs, 
     animationIndex, 
     maxSteps, 
+    onlySeekBar = false,
     onPlayPause, 
     onSpeedChange, 
     onSeek 
@@ -31,7 +33,7 @@ export default function AnimationController({
                 className={styles.seekbar}
             />
 
-            <div className={styles.control_button_container}>
+            {!onlySeekBar && <div className={styles.control_button_container}>
                 <div className={styles.speed_container}>
                     <span>Speed:</span>
                     <select 
@@ -49,9 +51,9 @@ export default function AnimationController({
                     onClick={onPlayPause} 
                     className={styles.play_button}
                 >
-                    {isPlaying ? '⏸' : (animationIndex == maxSteps) ? '⭯' : '▶'}
+                    {isPlaying ? '⏸' : (animationIndex >= maxSteps) ? '⭯' : '▶'}
                 </button>
-            </div>
+            </div>}
         </div> 
     );
 }

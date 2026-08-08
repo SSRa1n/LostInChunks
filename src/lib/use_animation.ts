@@ -1,6 +1,17 @@
 import { useState, useEffect } from 'react';
 
-export function useAnimation(maxSteps: number, defaultSpeedMs = 20) {
+export type AnimationResult = {
+    animationIndex: number;
+    isAnimating: boolean;
+    status: string;
+    speedMs: number;
+    isUserControlled: boolean;
+    handleSeek: (index: number) => void;
+    togglePlay: () => void;
+    changeSpeed: (newSpeed: number) => void;
+};
+
+export function useAnimation(maxSteps: number, defaultSpeedMs = 20, resetKey?: string) {
     const [animationIndex, setAnimationIndex] = useState(0);
     const [isAnimating, setIsAnimating] = useState(true);
     const [speedMs, setSpeedMs] = useState(defaultSpeedMs);
@@ -10,7 +21,7 @@ export function useAnimation(maxSteps: number, defaultSpeedMs = 20) {
         setAnimationIndex(0);
         setIsUserControlled(false);
         setIsAnimating(true);
-    }, [maxSteps]);
+    }, [maxSteps, resetKey]);
 
     useEffect(() => {
         if (!isAnimating) return;

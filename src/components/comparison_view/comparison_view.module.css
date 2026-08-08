@@ -18,7 +18,7 @@
 
 .comparison_container {
     display: flex;
+    flex-direction: row;
     justify-content: center;
-    gap: 3rem;
-    flex-wrap: wrap;
+    gap: 0 3rem;
 }

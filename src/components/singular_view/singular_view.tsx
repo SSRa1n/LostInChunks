@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { useMazeSearch, type AlgorithmType } from '../../lib/use_maze_search';
-import RenderMaze from '../../lib/render_maze';
 import type { Maze } from '../../lib/generate_maze';
+import { useAnimation } from '../../lib/use_animation';
+import MazeView from '../maze_view/maze_view';
 
 import styles from './singular_view.module.css';
 
@@ -11,44 +13,22 @@ type SingularViewProps = {
 };
 
 export default function SingularView({ maze, defaultAlgorithm = 'astar', renderCost = false }: SingularViewProps) {
-    const {
-        algorithmType,
-        setAlgorithmType,
-        searchResult,
-        animationIndex,
-        isAnimating,
-        animatedExplored,
-        displayedPath,
-    } = useMazeSearch(maze, 20, defaultAlgorithm);
+    const [algorithm, setAlgorithm] = useState<AlgorithmType>(defaultAlgorithm);
+
+    const searchResult = useMazeSearch(maze, algorithm);
+
+    const animationResult = useAnimation(searchResult.explored.length, 20);
 
     return (
         <div className={styles.container}>
-            
-            <div className={styles.util_container}>
-                Algorithm: 
-                <select 
-                    value={algorithmType} 
-                    onChange={(e) => setAlgorithmType(e.target.value as AlgorithmType)}
-                >
-                    <option value="astar">A* Search</option>
-                    <option value="dfs">Depth-First Search (DFS)</option>
-                </select>
-            </div>
-
-            <div className={styles.status_container}>
-                <span>{searchResult.found ? (isAnimating ? 'Exploring...' : 'Found!') : 'No Path'}</span> | 
-                <span> Explored: {animationIndex}</span> | 
-                <span> Path: {searchResult.path.length}</span>
-            </div>
-
-            <section className="maze-container">
-                <RenderMaze 
-                    maze={maze} 
-                    explored={animatedExplored} 
-                    path={displayedPath} 
-                    renderCost={renderCost}
-                />
-            </section>
+            <MazeView
+                maze={maze}
+                algorithmType={algorithm}
+                onAlgorithmChange={setAlgorithm}
+                searchResult={searchResult}
+                animationResult={animationResult}
+                renderCost={renderCost}
+            />
         </div>
     );
 }

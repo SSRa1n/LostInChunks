@@ -3,9 +3,3 @@
     flex-direction: column;
     align-items: center;
 }
-
-.util_container {
-    margin-bottom: 1rem;
-    display: flex;
-    gap: 1rem;
-}

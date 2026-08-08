@@ -1,0 +1,61 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+    margin: 10px 0;
+    width: 100%;
+}
+
+.seekbar {
+    width: 80%;
+    cursor: pointer;
+    background-color: #e0e0e0;
+}
+
+.control_button_container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 80%;
+    position: relative;
+}
+
+.speed_container {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+}
+
+.speed_select {
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.play_button {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: none;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.play_button:hover {
+    background-color: gray;
+}
+
+.play_button:active {
+    transform: translateX(-50%) scale(0.95);
+}

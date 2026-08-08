@@ -1,6 +1,11 @@
+import { useMemo } from 'react';
 import { useMazeSearch, type AlgorithmType } from '../../lib/use_maze_search';
 import RenderMaze from '../../lib/render_maze';
 import type { Maze } from '../../lib/generate_maze';
+import AnimationController from '../animation_controller/animation_controller';
+import AnimationStatus from '../animation_status/animation_status';
+import AlgorithmSelector from '../algorithm_selector/algorithm_selector';
+import { useAnimation } from '../../lib/use_animation';
 
 import styles from './singular_view.module.css';
 
@@ -14,39 +19,60 @@ export default function SingularView({ maze, defaultAlgorithm = 'astar' }: Singu
         algorithmType,
         setAlgorithmType,
         searchResult,
+    } = useMazeSearch(maze, defaultAlgorithm);
+
+    const {
         animationIndex,
         isAnimating,
-        animatedExplored,
-        displayedPath,
-    } = useMazeSearch(maze, 20, defaultAlgorithm);
+        status,
+        speedMs,
+        handleSeek,
+        togglePlay,
+        changeSpeed,
+    } = useAnimation(searchResult.explored.length, 20);
+
+    const animatedExplored = useMemo(() => {
+        return searchResult.explored.slice(0, animationIndex);
+    }, [searchResult.explored, animationIndex]);
+
+    const displayedPath = useMemo(() => {
+        if (animationIndex < searchResult.explored.length) {
+            return [];
+        }
+
+        return searchResult.path;
+    }, [animationIndex, searchResult.explored.length, searchResult.path]);
 
     return (
         <div className={styles.container}>
-            
-            <div className={styles.util_container}>
-                Algorithm: 
-                <select 
-                    value={algorithmType} 
-                    onChange={(e) => setAlgorithmType(e.target.value as AlgorithmType)}
-                >
-                    <option value="astar">A* Search</option>
-                    <option value="dfs">Depth-First Search (DFS)</option>
-                </select>
-            </div>
+            <AlgorithmSelector
+                algorithm={algorithmType}
+                onChange={setAlgorithmType}
+            />
 
-            <div className={styles.status_container}>
-                <span>{searchResult.found ? (isAnimating ? 'Exploring...' : 'Found!') : 'No Path'}</span> | 
-                <span> Explored: {animationIndex}</span> | 
-                <span> Path: {searchResult.path.length}</span>
-            </div>
+            <AnimationStatus
+                found={searchResult.found}
+                status={status}
+                animationIndex={animationIndex}
+                maxSteps={searchResult.explored.length}
+                pathLength={searchResult.path.length}
+            />
 
-            <section className="maze-container">
-                <RenderMaze 
-                    maze={maze} 
-                    explored={animatedExplored} 
-                    path={displayedPath} 
-                />
-            </section>
+            <RenderMaze 
+                maze={maze} 
+                explored={animatedExplored} 
+                path={displayedPath} 
+            />
+
+            <AnimationController 
+                isPlaying={isAnimating} 
+                speedMs={speedMs}
+                animationIndex={animationIndex}
+                maxSteps={searchResult.explored.length}
+                onPlayPause={togglePlay}
+                onSpeedChange={changeSpeed}
+                onSeek={handleSeek}
+            />
         </div>
     );
 }

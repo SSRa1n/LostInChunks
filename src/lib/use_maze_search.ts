@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { MazeProblem, type MazeState } from '../problems/maze_problem';
 import { DepthFirstSearch } from '../algorithms/dfs';
 import { AStarSearch } from '../algorithms/astar';
@@ -9,12 +9,9 @@ export type AlgorithmType = 'astar' | 'dfs';
 
 export function useMazeSearch(
     initialMaze: Maze, 
-    speedMs = 20, 
     defaultAlgorithm: AlgorithmType = 'astar'
 ) {
     const [algorithmType, setAlgorithmType] = useState<AlgorithmType>(defaultAlgorithm);
-    const [animationIndex, setAnimationIndex] = useState(0);
-    const [isAnimating, setIsAnimating] = useState(false);
 
     const maze = useMemo(() => {
         return structuredClone(initialMaze);
@@ -33,33 +30,10 @@ export function useMazeSearch(
         }
     }, [maze, algorithmType]);
 
-    useEffect(() => {
-        setAnimationIndex(0);
-        if (!searchResult.found) return;
-
-        setIsAnimating(true);
-        const interval = setInterval(() => {
-            setAnimationIndex((prev) => {
-                if (prev < searchResult.explored.length) {
-                    return prev + 1;
-                }
-                clearInterval(interval);
-                setIsAnimating(false);
-                return prev;
-            });
-        }, speedMs);
-
-        return () => clearInterval(interval);
-    }, [searchResult, speedMs]);
-
     return {
         maze,
         algorithmType,
         setAlgorithmType,
         searchResult,
-        animationIndex,
-        isAnimating,
-        animatedExplored: searchResult.explored.slice(0, animationIndex),
-        displayedPath: isAnimating ? [] : searchResult.path,
     };
 }

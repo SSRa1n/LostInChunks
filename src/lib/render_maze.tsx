@@ -1,4 +1,4 @@
-import { type JSX, useState } from "react";
+import { type JSX } from "react";
 import type { Maze } from "./generate_maze";
 import { BLOCKS } from "./blocks";
 import type { MazeState } from "../problems/maze_problem";
@@ -8,15 +8,15 @@ type RenderMazeProps = {
     maze: Maze;
     explored?: MazeState[];
     path?: MazeState[];
+    renderCost?: boolean;
 };
 
 export default function RenderMaze({
     maze,
     explored = [],
     path = [],
+    renderCost = false,
 }: RenderMazeProps): JSX.Element {
-    const [showLabels, setShowLabels] = useState(false);
-
     const exploredSet = new Set(explored.map((s) => `${s.x},${s.y}`));
     const pathSet = new Set(path.map((s) => `${s.x},${s.y}`));
 
@@ -24,12 +24,12 @@ export default function RenderMaze({
 
     return (
         <>
-            <button
+            {/* <button
                 onClick={() => setShowLabels((prev) => !prev)}
                 className="counter"
             >
                 {showLabels ? "Hide Labels" : "Show Labels"}
-            </button>
+            </button> */}
 
             {maze.map((row, y) => (
                 <div className="maze-rows" key={y}>
@@ -45,10 +45,10 @@ export default function RenderMaze({
                             block !== BLOCKS.BLOCK_GOAL
                         ) {
                             if (pathSet.has(key)) {
-                                image = "/blocks/lime_concrete.png";
+                                image = "./blocks/lime_concrete.png";
                                 alt = "Solution Path";
                             } else if (exploredSet.has(key)) {
-                                image = "/blocks/light_blue_concrete.png";
+                                image = "./blocks/light_blue_concrete.png";
                                 alt = "Explored";
                             }
                         }
@@ -61,7 +61,7 @@ export default function RenderMaze({
                                     alt={alt}
                                 />
 
-                                {showLabels && (
+                                {renderCost && (
                                     <span className="cost-label">
                                         {costMap[y][x].cost === Infinity
                                             ? "∞"

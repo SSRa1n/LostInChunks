@@ -84,6 +84,7 @@ export class MazeProblem implements SearchProblem<MazeState, MazeAction> {
     }
 
     stepCost(from: MazeState, to: MazeState, action: MazeAction): number {
+        console.log(`(${from.x}, ${from.y}) → (${to.x}, ${to.y}) = ${action}: ${this.maze[to.y][to.x].cost_onroad}`);
         return this.maze[to.y][to.x].cost_onroad;
     }
 

@@ -1,5 +1,5 @@
-import { PRESETS } from "../presets/map_presets";
-import RenderMaze from "../lib/render_maze";
+import { PRESETS } from "../../presets/map_presets";
+import RenderMaze from "../../lib/render_maze";
 
 export default function PresetmapPage() {
     return (

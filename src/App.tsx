@@ -1,8 +1,9 @@
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 
 import './App.css'
-import ComparisonPage from './pages/comparison_page'
-import PresetmapPage from './pages/presetmap_page'
+import ProblemPage from './pages/problem_page.tsx/problem_page';
+import ComparisonPage from './pages/comparison_page/comparison_page'
+import PresetmapPage from './pages/presetmap_page/presetmap_page'
 import PageFooter from './components/page_footer/footer'
 
 function App() {
@@ -10,7 +11,8 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<ComparisonPage />} />
+        <Route path="/" element={<ProblemPage />} />
+        <Route path="/comparison" element={<ComparisonPage />} />
         <Route path="/presetmap" element={<PresetmapPage />} />
       </Routes>
       <PageFooter />

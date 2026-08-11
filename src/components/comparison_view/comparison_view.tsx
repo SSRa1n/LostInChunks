@@ -4,11 +4,16 @@ import { type AlgorithmType, useMazeSearch } from '../../lib/use_maze_search';
 import { useAnimation } from '../../lib/use_animation';
 import AnimationController from '../animation_controller/animation_controller';
 import MazeView from '../maze_view/maze_view';
+import type { Maze } from '../../lib/generate_maze';
 
 import styles from './comparison_view.module.css';
 
-export default function ComparisonView() {
-  const [masterMaze, setMasterMaze] = useState(generateMaze(15, 11));
+type ComparisonViewProps = {
+  maze?: Maze;
+};
+
+export default function ComparisonView({ maze } : ComparisonViewProps) {
+  const [masterMaze, setMasterMaze] = useState(maze ? maze : generateMaze(15, 11));
   const [mazeVersion, setMazeVersion] = useState(0);
   const [showLabels, setShowLabels] = useState(false);
 
@@ -35,9 +40,9 @@ export default function ComparisonView() {
     <div className={styles.container}>
       
       <div className={styles.util_container}>
-        <button type="button" onClick={() => regenerateMaze()} className="counter">
+        {!maze && <button type="button" onClick={() => regenerateMaze()} className="counter">
           Regenerate Maze
-        </button>
+        </button>}
         <button
           onClick={() => setShowLabels((prev) => !prev)}
           className="counter"

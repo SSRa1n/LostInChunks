@@ -62,13 +62,14 @@ export default function RenderMaze({
                                 />
 
                                 {renderCost && (
-                                    <span className="cost-label">
+                                    <span className="cost-label" style={{ fontSize: "clamp(0.2rem, 2vw, 1rem)" }}>
                                         {costMap[y][x].cost === Infinity
                                             ? "∞"
                                             : costMap[y][x].cost}
                                     </span>
                                 )}
                             </div>
+
                         );
                     })}
                 </div>

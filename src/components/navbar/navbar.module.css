@@ -1,0 +1,52 @@
+nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    background-color: rgba(0, 0, 0, 0.5);
+    height: 60px;
+    width: 100%;
+    box-sizing: border-box;
+    position: fixed;
+    top: 0;
+}
+
+.navbar-logo {
+    height: 100px;
+    margin-right: 10px;
+}
+
+.navbar-left, .navbar-right {
+    display: flex;
+    align-items: center;
+    a {
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        font: inherit;
+        color: aliceblue;
+        text-decoration: none;
+    }
+    a:hover {
+        text-decoration: underline;
+    }
+    a:active {
+        img {
+            animation: KirbyJerk 0.05s ease-in-out infinite alternate;
+        }
+    }
+}
+
+.navbar-right {
+    gap: 10px;
+}
+
+@keyframes KirbyJerk {
+    from {
+        height: 100px;
+    }
+    to {
+        height: 120px;
+    }
+}

@@ -7,12 +7,6 @@
     width: 100%;
 }
 
-.seekbar {
-    width: 80%;
-    cursor: pointer;
-    background-color: #e0e0e0;
-}
-
 .control_button_container {
     display: flex;
     align-items: center;
@@ -58,4 +52,55 @@
 
 .play_button:active {
     transform: translateX(-50%) scale(0.95);
+}
+
+/* Animation control styles */
+.seekbar {
+    width: 80%;
+    cursor: pointer;
+
+    -webkit-appearance: none;
+    appearance: none;
+    height: 8px;
+    background: transparent;
+}
+
+.seekbar::-webkit-slider-runnable-track{
+    background:
+        repeating-linear-gradient(
+            to right,
+            #3ad53a 0 32px,
+            #2b9c2b 32px 36px
+        );
+    box-shadow: 
+        inset 0 0 4px #000,
+        0 0 0 2px #0e220e;
+
+    height: 8px;
+    border-radius: 4px;
+}
+
+.seekbar::-webkit-slider-thumb{
+    background: radial-gradient(circle at center,
+        rgb(109, 255, 0) 0%,
+        rgb(109, 255, 0) 30%,
+        rgb(84, 191, 0) 30%,
+        rgb(84, 191, 0) 40%,
+        rgb(68, 159, 0) 40%, 
+        rgb(68, 159, 0) 60%, 
+        rgb(44, 113, 0) 60%,  
+        rgb(44, 113, 0) 100% 
+    );
+
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    margin-top: -6px; /* centers thumb on 8px track */
+    cursor: grab;
+    border: none; border-radius: 50%;
+}
+
+.seekbar::-webkit-slider-thumb:active { 
+    cursor: grabbing; 
 }

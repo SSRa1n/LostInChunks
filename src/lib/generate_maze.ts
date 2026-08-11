@@ -127,5 +127,13 @@ export function generateMaze(
         }
     }
 
+    // Trim array to remove void tiles on the edges
+    while (maze[0].every(tile => tile === BLOCKS.BLOCK_VOID)) {
+        maze.shift();
+    }
+    while (maze[maze.length - 1].every(tile => tile === BLOCKS.BLOCK_VOID)) {
+        maze.pop();
+    }
+
     return maze;
 }

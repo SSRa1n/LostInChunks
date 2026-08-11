@@ -6,6 +6,8 @@ type AnimationControllerProps = {
     animationIndex: number;
     maxSteps: number;
     onlySeekBar?: boolean;
+
+    className?: string;
     
     onPlayPause: () => void;
     onSpeedChange: (speed: number) => void;
@@ -18,6 +20,7 @@ export default function AnimationController({
     animationIndex, 
     maxSteps, 
     onlySeekBar = false,
+    className,
     onPlayPause, 
     onSpeedChange, 
     onSeek 
@@ -30,7 +33,7 @@ export default function AnimationController({
                 max={maxSteps} 
                 value={animationIndex}
                 onChange={(e) => onSeek(Number(e.target.value))}
-                className={styles.seekbar}
+                className={className || styles.seekbar}
             />
 
             {!onlySeekBar && <div className={styles.control_button_container}>

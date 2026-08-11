@@ -69,6 +69,7 @@ export default function ComparisonView() {
       </div>
 
       <AnimationController 
+        className={styles.animation_controller}
         isPlaying={animationResult.isAnimating} 
         speedMs={animationResult.speedMs}
         animationIndex={animationResult.animationIndex}

@@ -29,7 +29,7 @@ export class Block {
 export const BLOCKS = {
     BLOCK_GOAL : new Block('Goal', './blocks/gold_block.png', 0, 0),
     BLOCK_START : new Block('Start', './blocks/beacon.png', 0, 0),
-    BLOCK_VOID : new Block('Void', './blocks/suspicious_sand_3.png', Infinity, 0),
+    BLOCK_VOID : new Block('Void', './blocks/end_portal.png', Infinity, 0),
     BLOCK_PATH : new Block('Path', './blocks/stone.png', 0, 0),
     BLOCK_WATER : new Block('Water', './blocks/water.png', 8, 8, true, 0.1, 0.1, 0.25, 0.5),
     BLOCK_CACTUS : new Block('Cactus', './blocks/cactus.png', Infinity, 8, true, 0.05, 0.1, 0, 0),

@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import type { AlgorithmType } from "../../lib/use_maze_search";
 import type { AnimationResult } from "../../lib/use_animation";
-import type { Maze } from '../../lib/generate_maze';
+import type { MazeData } from '../../lib/generate_maze';
 import RenderMaze from "../../lib/render_maze";
 import AnimationController from '../animation_controller/animation_controller';
 import AnimationStatus from '../animation_status/animation_status';
@@ -12,7 +12,7 @@ import type { MazeAction, MazeState } from "../../problems/maze_problem";
 import styles from './maze_view.module.css'
 
 type MazeViewProps = {
-    maze: Maze;
+    mazeData: MazeData;
     algorithmType: AlgorithmType;
     onAlgorithmChange: (alg: AlgorithmType) => void;
     searchResult: SearchResult<MazeState, MazeAction>;
@@ -22,7 +22,7 @@ type MazeViewProps = {
 };
 
 export default function MazeView({ 
-    maze, 
+    mazeData, 
     algorithmType, 
     onAlgorithmChange, 
     searchResult, 
@@ -58,7 +58,7 @@ export default function MazeView({
             />
 
             <RenderMaze 
-                maze={maze} 
+                mazeData={mazeData} 
                 explored={animatedExplored} 
                 path={displayedPath} 
                 renderCost={renderCost}

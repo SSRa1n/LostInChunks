@@ -25,8 +25,7 @@ export function calculateCost(maze: Maze): CostMap {
                 [1, 0],
                 [0, -1],
                 [0, 1]
-            ]
-
+            ];
             const adj_costs: number[] = [];
 
             for (const [dx, dy] of adj_offsets) {

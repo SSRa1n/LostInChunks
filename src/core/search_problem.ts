@@ -7,6 +7,8 @@ export interface SearchProblem<State, Action> {
 
     initialState(): State;
 
+    goalState(): State;
+
     isGoal(state: State): boolean;
 
     getSuccessors(

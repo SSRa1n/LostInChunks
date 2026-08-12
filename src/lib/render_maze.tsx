@@ -1,18 +1,17 @@
 import { type JSX } from "react";
-import type { Maze } from "./generate_maze";
+import type { MazeData } from "./generate_maze";
 import { BLOCKS } from "./blocks";
 import type { MazeState } from "../problems/maze_problem";
-import { calculateCost } from "./calculate_cost";
 
 type RenderMazeProps = {
-    maze: Maze;
+    mazeData: MazeData;
     explored?: MazeState[];
     path?: MazeState[];
     renderCost?: boolean;
 };
 
 export default function RenderMaze({
-    maze,
+    mazeData,
     explored = [],
     path = [],
     renderCost = false,
@@ -20,17 +19,10 @@ export default function RenderMaze({
     const exploredSet = new Set(explored.map((s) => `${s.x},${s.y}`));
     const pathSet = new Set(path.map((s) => `${s.x},${s.y}`));
 
-    const costMap = calculateCost(maze);
+    const { grid: maze, costMap } = mazeData;
 
     return (
         <>
-            {/* <button
-                onClick={() => setShowLabels((prev) => !prev)}
-                className="counter"
-            >
-                {showLabels ? "Hide Labels" : "Show Labels"}
-            </button> */}
-
             {maze.map((row, y) => (
                 <div className="maze-rows" key={y}>
                     {row.map((block, x) => {
@@ -69,7 +61,6 @@ export default function RenderMaze({
                                     </span>
                                 )}
                             </div>
-
                         );
                     })}
                 </div>

@@ -1,12 +1,39 @@
 import { Block, BLOCKS } from "./blocks";
+import { calculateCost, type CostMap } from "./calculate_cost";
 
 export type Maze = Block[][];
 
+export interface MazePosition {
+    x: number;
+    y: number;
+}
+
+export class MazeData {
+    readonly grid: Maze;
+    readonly costMap: CostMap;
+    readonly start: MazePosition;
+    readonly goal: MazePosition;
+
+    constructor(grid: Block[][], costMap: CostMap, start: MazePosition, goal: MazePosition) {
+        this.grid = grid;
+        this.costMap = costMap;
+        this.start = start;
+        this.goal = goal;
+    }
+
+    get width(): number {
+        return this.grid[0]?.length ?? 0;
+    }
+
+    get height(): number {
+        return this.grid.length;
+    }
+}
+
 export function generateMaze(
     width: number,
-    height: number
-): Maze {
-
+    height: number,
+): MazeData {
     // force odd dimensions
     width = width % 2 === 0 ? width + 1 : width;
     height = height % 2 === 0 ? height + 1 : height;
@@ -82,9 +109,12 @@ export function generateMaze(
         }
     }
 
-    // Add start and goal positions
-    maze[height - 2][1] = BLOCKS.BLOCK_START;
-    maze[1][width - 2] = BLOCKS.BLOCK_GOAL;
+    // Define and place start and goal positions
+    const start: MazePosition = { x: 1, y: height - 2 };
+    const goal: MazePosition = { x: width - 2, y: 1 };
+
+    maze[start.y][start.x] = BLOCKS.BLOCK_START;
+    maze[goal.y][goal.x] = BLOCKS.BLOCK_GOAL;
 
     // Add random obstacles
     const walkable: [number, number][] = [];
@@ -99,8 +129,8 @@ export function generateMaze(
         }
     }
 
-    const max_inf_path = 2
-    let curr_inf_path = 0
+    const max_inf_path = 2;
+    let curr_inf_path = 0;
 
     for (const block of Object.values(BLOCKS).filter(b => b.is_obstacle)) {
 
@@ -130,10 +160,51 @@ export function generateMaze(
     // Trim array to remove void tiles on the edges
     while (maze[0].every(tile => tile === BLOCKS.BLOCK_VOID)) {
         maze.shift();
+        start.y--;
+        goal.y--;
     }
     while (maze[maze.length - 1].every(tile => tile === BLOCKS.BLOCK_VOID)) {
         maze.pop();
     }
 
-    return maze;
+    const costMap = calculateCost(maze)
+
+    return new MazeData(maze, costMap, start, goal);
+}
+
+export function enrichPreset(preset: Maze) {
+    const maze: Maze = preset.map(row => [...row]);
+    
+    let start: MazePosition = { x: 0, y: 0 };
+    let goal: MazePosition = { x: 0, y: 0 };
+    let foundStart = false;
+    let foundGoal = false;
+
+    for (let y = 0; y < maze.length; y++) {
+        for (let x = 0; x < maze[y].length; x++) {
+            if (maze[y][x] === BLOCKS.BLOCK_START) {
+                start = { x, y };
+                foundStart = true;
+            } else if (maze[y][x] === BLOCKS.BLOCK_GOAL) {
+                goal = { x, y };
+                foundGoal = true;
+            }
+        }
+    }
+
+    if (!foundStart || !foundGoal) {
+        console.warn("Preset missing BLOCKS.BLOCK_START or BLOCKS.BLOCK_GOAL. Defaults applied.");
+    }
+
+    while (maze.length > 0 && maze[0].every(tile => tile === BLOCKS.BLOCK_VOID)) {
+        maze.shift();
+        start.y--;
+        goal.y--;
+    }
+    while (maze.length > 0 && maze[maze.length - 1].every(tile => tile === BLOCKS.BLOCK_VOID)) {
+        maze.pop();
+    }
+
+    const costMap = calculateCost(maze);
+    return new MazeData(maze, costMap, start, goal);
 }

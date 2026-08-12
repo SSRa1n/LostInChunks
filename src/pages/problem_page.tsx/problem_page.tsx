@@ -2,6 +2,7 @@ import styles from './problem_page.module.css'
 import { BLOCKS, BLOCK_DESCRIPTION } from '../../lib/blocks';
 import RenderMaze from '../../lib/render_maze';
 import { PRESETS } from "../../presets/map_presets";
+import { enrichPreset } from '../../lib/generate_maze';
 
 export default function ProblemPage() {
   return (
@@ -178,7 +179,7 @@ export default function ProblemPage() {
           fewest movements.
         </p>
 
-        <RenderMaze maze={PRESETS[0]} renderCost={true}/>
+        <RenderMaze mazeData={enrichPreset(PRESETS[0])} renderCost={true}/>
       </section>
     </div>
   );

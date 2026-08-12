@@ -4,16 +4,16 @@ import { type AlgorithmType, useMazeSearch } from '../../lib/use_maze_search';
 import { useAnimation } from '../../lib/use_animation';
 import AnimationController from '../animation_controller/animation_controller';
 import MazeView from '../maze_view/maze_view';
-import type { Maze } from '../../lib/generate_maze';
+import type { MazeData } from '../../lib/generate_maze';
 
 import styles from './comparison_view.module.css';
 
 type ComparisonViewProps = {
-  maze?: Maze;
+  mazeData?: MazeData;
 };
 
-export default function ComparisonView({ maze } : ComparisonViewProps) {
-  const [masterMaze, setMasterMaze] = useState(maze ? maze : generateMaze(15, 11));
+export default function ComparisonView({ mazeData } : ComparisonViewProps) {
+  const [masterMaze, setMasterMaze] = useState(mazeData ? mazeData : generateMaze(15, 11));
   const [mazeVersion, setMazeVersion] = useState(0);
   const [showLabels, setShowLabels] = useState(false);
 
@@ -40,7 +40,7 @@ export default function ComparisonView({ maze } : ComparisonViewProps) {
     <div className={styles.container}>
       
       <div className={styles.util_container}>
-        {!maze && <button type="button" onClick={() => regenerateMaze()} className="counter">
+        {!mazeData && <button type="button" onClick={() => regenerateMaze()} className="counter">
           Regenerate Maze
         </button>}
         <button
@@ -53,7 +53,7 @@ export default function ComparisonView({ maze } : ComparisonViewProps) {
 
       <div className={styles.comparison_container}>
         <MazeView
-          maze={masterMaze}
+          mazeData={masterMaze}
           algorithmType={algorithm1}
           onAlgorithmChange={setAlgorithm1}
           searchResult={searchResult1}
@@ -63,7 +63,7 @@ export default function ComparisonView({ maze } : ComparisonViewProps) {
         />
 
         <MazeView
-          maze={masterMaze}
+          mazeData={masterMaze}
           algorithmType={algorithm2}
           onAlgorithmChange={setAlgorithm2}
           searchResult={searchResult2}

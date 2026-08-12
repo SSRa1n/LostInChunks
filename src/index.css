@@ -32,7 +32,7 @@
 
 :root {
   --text: aliceblue;
-  --text-h: #08060d;
+  --text-h: aliceblue;
   --code-bg: #f4f3ec;
   --accent: #aa3bff;
   --accent-bg: rgba(170, 59, 255, 0.1);
@@ -41,11 +41,9 @@
   --shadow:
     rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+  --mincraft-font: 'Minecraft', sans-serif;
 
-  font: 18px/145% var(--sans);
+  font: 18px/145% var(--mincraft-font);
   letter-spacing: 0.18px;
   color-scheme: light dark;
   color: var(--text);
@@ -54,6 +52,8 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  --navbar-height: 60px;
 
   @media (max-width: 1024px) {
     font-size: 16px;
@@ -64,7 +64,8 @@
   /* width: 1126px; */
   max-width: 100%;
   /* margin: 0 auto; */
-  font-family: 'Minecraft', sans-serif;
+  padding-top: var(--navbar-height);
+  font-family: var(--mincraft-font);
   text-align: center;
   min-height: 100svh;
   display: flex;
@@ -81,7 +82,7 @@ body {
 
 h1,
 h2 {
-  font-family: var(--heading);
+  font-family: var(--mincraft-font);
   font-weight: 500;
   color: var(--text-h);
 }
@@ -110,7 +111,7 @@ p {
 
 code,
 .counter {
-  font-family: var(--mono);
+  font-family: var(--mincraft-font);
   display: inline-flex;
   border-radius: 4px;
   color: var(--text-h);

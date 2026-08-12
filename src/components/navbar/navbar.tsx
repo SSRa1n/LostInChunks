@@ -1,3 +1,4 @@
+import { NavLink } from 'react-router-dom';
 import styles from './navbar.module.css';
 
 export default function Navbar() {
@@ -10,8 +11,31 @@ export default function Navbar() {
                 <p>LostInChunks</p>
             </div>
             <div className={styles['navbar-right']}>
-                <p>Right</p>
-                <a href="#/presetmap">Preset Map</a>
+                <NavLink
+                    to="/"
+                    end
+                    className={({ isActive }) =>
+                        isActive ? styles.active : ''
+                    }
+                >
+                    Problem
+                </NavLink>
+                <NavLink
+                    to="/comparison"
+                    className={({ isActive }) =>
+                        isActive ? styles.active : ''
+                    }
+                >
+                    Comparison
+                </NavLink>
+                <NavLink
+                    to="/presetmap"
+                    className={({ isActive }) =>
+                        isActive ? styles.active : ''
+                    }
+                >
+                    Preset Map
+                </NavLink>
             </div>
         </nav>
     );

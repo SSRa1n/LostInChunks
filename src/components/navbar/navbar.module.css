@@ -4,11 +4,12 @@ nav {
     justify-content: space-between;
     padding: 0 20px;
     background-color: rgba(0, 0, 0, 0.5);
-    height: 60px;
+    height: var(--navbar-height);
     width: 100%;
     box-sizing: border-box;
     position: fixed;
     top: 0;
+    z-index: 10;
 }
 
 .navbar-logo {
@@ -40,6 +41,10 @@ nav {
 
 .navbar-right {
     gap: 10px;
+
+    .active {
+        color: yellow;
+    }
 }
 
 @keyframes KirbyJerk {

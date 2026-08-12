@@ -39,3 +39,17 @@ export const BLOCKS = {
     BLOCK_MAGMA_ZOMBIE : new Block('Magma Zombie', './blocks/magma.png', 16, 8),
     BLOCK_LAVA_ZOMBIE : new Block('Lava Zombie', './blocks/lava.png', 16, 8)
 } as const
+
+export const BLOCK_DESCRIPTION = {
+    BLOCK_GOAL : 'The Goal block represents the destination. A search is successful when the NPC reaches this cell.',
+    BLOCK_START : 'The Start block represents the initial position of the NPC. The search begins from this cell.',
+    BLOCK_VOID : 'Void represents an impassable area. The NPC cannot enter these cells, making them equivalent to walls or inaccessible terrain.',
+    BLOCK_PATH : 'Path blocks represent ordinary terrain that the NPC can safely travel across. They have a low traversal cost and form the main routes through the maze.',
+    BLOCK_WATER : 'Water is traversable but has a higher cost than ordinary path terrain. It represents an environmental hazard that makes a route less desirable.',
+    BLOCK_CACTUS : 'Cactus represents a dangerous obstacle. Moving directly onto a cactus is not allowed, but its presence can also increase the cost of moving through neighboring cells.',
+    BLOCK_HONEY : 'Honey represents slow terrain. It can be entered, but moving through it has a higher cost than normal terrain, encouraging the search algorithm to avoid it when a cheaper alternative exists.',
+    BLOCK_MAGMA : 'Magma represent extremely dangerous terrain. They are normally impassable to the NPC, while their surrounding area can still influence the cost of nearby movement.',
+    BLOCK_LAVA : 'Lava represent extremely dangerous terrain. They are normally impassable to the NPC, while their surrounding area can still influence the cost of nearby movement.',
+    BLOCK_MAGMA_ZOMBIE : '???',
+    BLOCK_LAVA_ZOMBIE : '???'
+} as const

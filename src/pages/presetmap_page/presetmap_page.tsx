@@ -1,5 +1,5 @@
-import { PRESETS } from "../presets/map_presets";
-import ComparisonView from "../components/comparison_view/comparison_view";
+import { PRESETS } from "../../presets/map_presets";
+import ComparisonView from "../../components/comparison_view/comparison_view";
 
 export default function PresetmapPage() {
     return (

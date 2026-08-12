@@ -1,0 +1,24 @@
+.container {
+    padding: 0 100px;
+    text-align: left;
+
+    section {
+        margin-bottom: 30px;
+        padding: 30px;
+        border: 1px solid gray;
+    }
+}
+
+.block_card {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+
+    div {
+        margin-left: 20px;
+
+        h3 {
+            margin: 0 0;
+        }
+    }
+}

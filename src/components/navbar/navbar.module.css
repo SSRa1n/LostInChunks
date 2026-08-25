@@ -20,7 +20,7 @@ nav {
 .navbar-left, .navbar-right {
     display: flex;
     align-items: center;
-    a {
+    a.kirby {
         background: none;
         border: none;
         padding: 0;
@@ -29,10 +29,10 @@ nav {
         color: aliceblue;
         text-decoration: none;
     }
-    a:hover {
+    a.kirby:hover {
         text-decoration: underline;
     }
-    a:active {
+    a.kirby:active {
         img {
             animation: KirbyJerk 0.05s ease-in-out infinite alternate;
         }

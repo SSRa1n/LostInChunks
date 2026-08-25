@@ -54,6 +54,8 @@
   -moz-osx-font-smoothing: grayscale;
 
   --navbar-height: 60px;
+  --navbar-icon-size: 50px;
+  --navbar-compass-icon-size: 35px;
 
   @media (max-width: 1024px) {
     font-size: 16px;
@@ -122,4 +124,111 @@ code {
   line-height: 135%;
   padding: 4px 8px;
   background: var(--code-bg);
+}
+
+/* Icon */
+.navbar-icon-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.chunk-icon {
+  display: block;
+  width: var(--navbar-icon-size);
+  height: var(--navbar-icon-size);
+  background-image: url("../public/icon/web-icon-spritesheet-full.png");
+  background-size: calc(var(--navbar-icon-size) * 16) var(--navbar-icon-size);
+  background-repeat: no-repeat;
+
+  margin-right: 1rem;
+
+  animation: duskToDawn 0.3s steps(15) forwards;
+}
+
+.navbar-icon-container:hover .chunk-icon {
+  animation: dawnToDusk 0.3s steps(15) forwards;
+}
+
+@keyframes dawnToDusk {
+  from {
+    background-position: 0 0;
+  }
+
+  to {
+    background-position: calc(var(--navbar-icon-size) * -15) 0;
+  }
+}
+
+@keyframes duskToDawn {
+  0% {
+    background-position: calc(var(--navbar-icon-size) * -15) 0;
+  }
+
+  100% {
+    background-position: 0 0;
+  }
+}
+
+.compass-icon {
+  display: block;
+  position: fixed;
+  top: calc(var(--navbar-height)/2 - var(--navbar-compass-icon-size)/2);
+  left: calc(20px + var(--navbar-icon-size)/2 - var(--navbar-compass-icon-size)/2);
+  width: var(--navbar-compass-icon-size);
+  height: var(--navbar-compass-icon-size);
+  background-image: url("../public/icon/web-icon-compass.png");
+  background-size: calc(var(--navbar-compass-icon-size) * 29) var(--navbar-compass-icon-size);
+  background-repeat: no-repeat;
+
+  margin-right: 1rem;
+
+  transform: translateY(0);
+  transition: transform 0.3s ease;
+}
+
+.navbar-icon-container:hover .compass-icon {
+  transform: translateY(5px);
+}
+
+@keyframes compassCW {
+  from {
+    background-position: 0 0;
+  }
+
+  to {
+    background-position: calc(var(--navbar-compass-icon-size) * -28) 0;
+  }
+}
+
+@keyframes compassCCW {
+  0% {
+    background-position: calc(var(--navbar-compass-icon-size) * -28) 0;
+  }
+
+  100% {
+    background-position: 0 0;
+  }
+}
+
+@keyframes compassDown {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(5px);
+  }
+}
+
+@keyframes compassUp {
+  from {
+    transform: translateY(5px);
+  }
+
+  to {
+    transform: translateY(0);
+  }
 }

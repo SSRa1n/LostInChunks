@@ -1,86 +1,92 @@
 import { NavLink } from 'react-router-dom';
 import styles from './navbar.module.css';
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+
+const COMPASS_FRAMES = 29;
+const COMPASS_REVOLUTION_TIME = 900;
+const COMPASS_FRAME_TIME = COMPASS_REVOLUTION_TIME / COMPASS_FRAMES;
+
+const wrapFrame = (frame: number) =>
+    ((frame % COMPASS_FRAMES) + COMPASS_FRAMES) % COMPASS_FRAMES;
 
 export default function Navbar() {
-    const compassRef = useRef<HTMLAnchorElement>(null);
-    const animationRef = useRef<Animation | null>(null);
-    const hoveringRef = useRef(false);
+    const [currentFrame, setCurrentFrame] = useState(0);
 
-    useEffect(() => {
-        const el = compassRef.current;
-        if (!el) return;
+    const frameIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+    const idleTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-        const animation = el.animate(
-            [
-                { backgroundPosition: "0 0" },
-                {
-                    backgroundPosition:
-                        "calc(var(--navbar-compass-icon-size) * -28) 0",
-                },
-            ],
-            {
-                duration: 800,
-                easing: "steps(28, end)",
-                fill: "both",
-            }
-        );
+    const stopAnimation = () => {
+        if (frameIntervalRef.current !== null) {
+            clearInterval(frameIntervalRef.current);
+            frameIntervalRef.current = null;
+        }
 
-        animation.pause();
-        animation.currentTime = 0;
+        if (idleTimeoutRef.current !== null) {
+            clearTimeout(idleTimeoutRef.current);
+            idleTimeoutRef.current = null;
+        }
+    };
 
-        animation.onfinish = () => {
-            if (!hoveringRef.current) {
+    const startSpin = () => {
+        stopAnimation();
+
+        frameIntervalRef.current = setInterval(() => {
+            setCurrentFrame((frame) => wrapFrame(frame + 1));
+        }, COMPASS_FRAME_TIME);
+    };
+
+    const startIdleAnimation = () => {
+        stopAnimation();
+
+        const randomStride = Math.floor(Math.random() * 17) - 8;
+
+        let remainingFrames = randomStride;
+
+        frameIntervalRef.current = setInterval(() => {
+            if (remainingFrames === 0) {
+                stopAnimation();
+
+                // Wait one second before doing another idle movement
+                idleTimeoutRef.current = setTimeout(
+                    startIdleAnimation,
+                    1000
+                );
+
                 return;
             }
 
-            animation.currentTime = 0;
-            animation.playbackRate = 1;
-            animation.play();
-        };
+            setCurrentFrame((frame) =>
+                wrapFrame(frame + Math.sign(remainingFrames))
+            );
 
-        animationRef.current = animation;
+            remainingFrames -= Math.sign(remainingFrames);
+        }, 100);
+    };
+
+    useEffect(() => {
+        startIdleAnimation();
 
         return () => {
-            animation.cancel();
-            animationRef.current = null;
+            stopAnimation();
         };
     }, []);
-
-    const handleMouseEnter = () => {
-        const animation = animationRef.current;
-        if (!animation) return;
-
-        hoveringRef.current = true;
-
-        animation.playbackRate = 1;
-        animation.play();
-    };
-
-    const handleMouseLeave = () => {
-        const animation = animationRef.current;
-        if (!animation) return;
-
-        hoveringRef.current = false;
-
-        animation.playbackRate = -1;
-        animation.play();
-    };
 
     return (
         <nav className={styles.navbar}>
             <div className={styles['navbar-left']}>
                 <span
                     className="navbar-icon-container"
-                    onMouseEnter={handleMouseEnter}
-                    onMouseLeave={handleMouseLeave}
+                    onMouseEnter={startSpin}
+                    onMouseLeave={startIdleAnimation}
                 >
                     <a href="#/" className="chunk-icon" />
 
                     <a
                         href="#/"
                         className="compass-icon"
-                        ref={compassRef}
+                        style={{
+                            backgroundPosition: `calc(var(--navbar-compass-icon-size) * -${currentFrame}) 0`,
+                        }}
                     />
                 </span>
 
@@ -118,4 +124,4 @@ export default function Navbar() {
             </div>
         </nav>
     );
-} 
+}

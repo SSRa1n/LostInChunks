@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 const COMPASS_FRAMES = 29;
 const COMPASS_REVOLUTION_TIME = 900;
 const COMPASS_FRAME_TIME = COMPASS_REVOLUTION_TIME / COMPASS_FRAMES;
+const COMPASS_IDLE_SWING_RANGE = 15;
 
 const wrapFrame = (frame: number) =>
     ((frame % COMPASS_FRAMES) + COMPASS_FRAMES) % COMPASS_FRAMES;
@@ -38,7 +39,7 @@ export default function Navbar() {
     const startIdleAnimation = () => {
         stopAnimation();
 
-        const randomStride = Math.floor(Math.random() * 17) - 8;
+        const randomStride = Math.floor(Math.random() * (COMPASS_IDLE_SWING_RANGE * 2 + 1)) - COMPASS_IDLE_SWING_RANGE;
 
         let remainingFrames = randomStride;
 

@@ -14,6 +14,10 @@
     align-items: center;
     margin: 20px 0;
 
+    img {
+        image-rendering: pixelated;
+    }
+
     div {
         margin-left: 20px;
 

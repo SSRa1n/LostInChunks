@@ -36,8 +36,6 @@ export const BLOCKS = {
     BLOCK_HONEY : new Block('Honey', './blocks/honey.png', 6, 0, true, 0.25, 0, 0.5, 0),
     BLOCK_MAGMA : new Block('Magma', './blocks/magma.png', Infinity, 16, true, 0.05, 0.1, 0, 0.5),
     BLOCK_LAVA : new Block('Lava', './blocks/lava.png', Infinity, 16, true, 0.05, 0.1, 0, 0.5),
-    BLOCK_MAGMA_ZOMBIE : new Block('Magma Zombie', './blocks/magma.png', 16, 8),
-    BLOCK_LAVA_ZOMBIE : new Block('Lava Zombie', './blocks/lava.png', 16, 8)
 } as const
 
 export const BLOCK_DESCRIPTION = {
@@ -50,6 +48,4 @@ export const BLOCK_DESCRIPTION = {
     BLOCK_HONEY : 'Honey represents slow terrain. It can be entered, but moving through it has a higher cost than normal terrain, encouraging the search algorithm to avoid it when a cheaper alternative exists.',
     BLOCK_MAGMA : 'Magma represent extremely dangerous terrain. They are normally impassable to the NPC, while their surrounding area can still influence the cost of nearby movement.',
     BLOCK_LAVA : 'Lava represent extremely dangerous terrain. They are normally impassable to the NPC, while their surrounding area can still influence the cost of nearby movement.',
-    BLOCK_MAGMA_ZOMBIE : '???',
-    BLOCK_LAVA_ZOMBIE : '???'
 } as const

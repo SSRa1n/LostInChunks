@@ -135,6 +135,66 @@ code {
   cursor: pointer;
 }
 
+.navbar-title {
+  color: aliceblue;
+  text-decoration: none;
+  display: block;
+  position: fixed;
+  left: calc(20px + var(--navbar-icon-size) + 1rem);
+  text-shadow: 3px -2px 4px rgba(255,255, 255, 0.5);
+  animation: navbarDawnToDusk 0.3s forwards;
+}
+
+.navbar-title:hover {
+  animation: navbarDuskToDawn 0.3s forwards;
+}
+
+@keyframes navbarDuskToDawn {
+  0% {
+    color: aliceblue;
+  }
+
+  25% {
+    text-shadow: 3px -2px 4px rgba(255,255, 255, 0.5);
+  }
+
+  50% {
+    text-shadow: 4px 0 4px rgba(255,255, 255, 0.5);
+  }
+
+  75% {
+    text-shadow: 0 2px 4px rgba(255,255, 255, 0.5);
+  }
+
+  100% {
+    color: burlywood;
+    text-shadow: -3px 2px 4px rgba(255,255, 255, 0.5);
+  }
+}
+
+@keyframes navbarDawnToDusk {
+  0% {
+    color: burlywood;
+    text-shadow: -3px 2px 4px rgba(255,255, 255, 0.5);
+  }
+
+  25% {
+    text-shadow: 0 2px 4px rgba(255,255, 255, 0.5);
+    
+  }
+
+  50% {
+    text-shadow: 4px 0 4px rgba(255,255, 255, 0.5);
+  }
+  75% {
+    text-shadow: 3px -2px 4px rgba(255,255, 255, 0.5);
+  }
+
+  100% {
+    color: aliceblue;
+  }
+}
+
 .chunk-icon {
   display: block;
   width: var(--navbar-icon-size);

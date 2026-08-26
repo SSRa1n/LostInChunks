@@ -6,6 +6,9 @@
         margin-bottom: 30px;
         padding: 30px;
         border: 1px solid gray;
+
+        display: flex;
+        flex-direction: column;
     }
 }
 
@@ -25,4 +28,9 @@
             margin: 0 0;
         }
     }
+}
+
+.maze_container {
+    margin-inline: auto;
+    margin-top: 20px;
 }

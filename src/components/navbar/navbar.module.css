@@ -40,10 +40,46 @@ nav {
 }
 
 .navbar-right {
-    gap: 10px;
+    gap: 2rem;
 
     .active {
         color: yellow;
+    }
+
+    .active::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        transform: scaleX(1);
+        height: 2px;
+        bottom: 0px;
+        left: 0;
+        background-color: yellow;
+        transform-origin: bottom right;
+    }
+
+    a {
+        position: relative;
+        color: aliceblue;
+        text-decoration: none;
+    }
+
+    a::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        transform: scaleX(0);
+        height: 2px;
+        bottom: 0px;
+        left: 0;
+        background-color: aliceblue;
+        transform-origin: bottom right;
+        transition: transform 0.25s ease-out;
+    }
+
+    a:hover::after {
+        transform: scaleX(1);
+        transform-origin: bottom left;
     }
 }
 

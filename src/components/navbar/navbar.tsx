@@ -78,10 +78,8 @@ export default function Navbar() {
                 <span
                     className="navbar-icon-container"
                     onMouseEnter={startSpin}
-                    onMouseLeave={startIdleAnimation}
-                >
+                    onMouseLeave={startIdleAnimation}>
                     <a href="#/" className="chunk-icon" />
-
                     <a
                         href="#/"
                         className="compass-icon"
@@ -89,9 +87,9 @@ export default function Navbar() {
                             backgroundPosition: `calc(var(--navbar-compass-icon-size) * -${currentFrame}) 0`,
                         }}
                     />
+                    <a href="#/" className="navbar-title"><h3>LostInChunks</h3></a>
                 </span>
 
-                <p>LostInChunks</p>
             </div>
 
             <div className={styles['navbar-right']}>

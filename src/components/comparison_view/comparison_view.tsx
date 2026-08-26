@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { generateMaze } from '../../lib/generate_maze';
 import { type AlgorithmType, useMazeSearch } from '../../lib/use_maze_search';
 import { useAnimation } from '../../lib/use_animation';
@@ -16,6 +16,13 @@ export default function ComparisonView({ mazeData } : ComparisonViewProps) {
   const [masterMaze, setMasterMaze] = useState(mazeData ? mazeData : generateMaze(15, 11));
   const [mazeVersion, setMazeVersion] = useState(0);
   const [showLabels, setShowLabels] = useState(false);
+
+  useEffect(() => {
+    if (!mazeData) return;
+
+    setMasterMaze(mazeData);
+    setMazeVersion(prev => prev + 1);
+  }, [mazeData]);
 
   const regenerateMaze = () => {
     setMasterMaze(generateMaze(15, 11));

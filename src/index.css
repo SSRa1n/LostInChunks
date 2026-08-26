@@ -292,3 +292,23 @@ code {
     transform: translateY(0);
   }
 }
+
+select {
+  font-family: var(--mincraft-font);
+  font-size: 1rem;
+  background-color: black;
+  border: 1px solid aliceblue;
+  color: aliceblue;
+  display: flex;
+  align-items: center;
+  height: 2rem;
+}
+
+option {
+  background-color: black;
+  color: aliceblue;
+}
+
+option:hover {
+  background-color: yellow;
+}

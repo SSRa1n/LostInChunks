@@ -9,7 +9,7 @@
 .footer-links {
     display: flex;
     justify-content: center;
-    gap: 16px;
+    gap: 1.5rem;
     margin-top: 8px;
 }
 

@@ -5,9 +5,9 @@ export default function PageFooter() {
         <footer className={styles['page-footer']}>
             <p>© 2026 Lost in Chunks. All rights reserved.</p>
             <div className={styles['footer-links']}>
-                <a href="#" onClick={(e) => e.preventDefault()}>About</a>
+                <a href="#/about">About</a>
                 <a href="#" onClick={(e) => e.preventDefault()}>Youtube</a>
-                <a href="#" onClick={(e) => e.preventDefault()}>Privacy Policy</a>
+                <a href="#/policy">Privacy Policy</a>
             </div>
         </footer>
     );

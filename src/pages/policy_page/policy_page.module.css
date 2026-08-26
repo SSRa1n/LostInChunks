@@ -1,0 +1,12 @@
+.policyPage {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    h1 {
+        position: fixed;
+        bottom: 50vh;
+        font-size: 10vw;
+    }
+}

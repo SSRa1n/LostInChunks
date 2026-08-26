@@ -145,7 +145,7 @@ code {
   animation: navbarDawnToDusk 0.3s forwards;
 }
 
-.navbar-title:hover {
+.navbar-icon-container:hover .navbar-title {
   animation: navbarDuskToDawn 0.3s forwards;
 }
 

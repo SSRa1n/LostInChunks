@@ -4,6 +4,8 @@ import './App.css'
 import ProblemPage from './pages/problem_page.tsx/problem_page';
 import ComparisonPage from './pages/comparison_page/comparison_page'
 import PresetmapPage from './pages/presetmap_page/presetmap_page'
+import AboutPage from './pages/about_page/about_page'
+import PolicyPage from './pages/policy_page/policy_page'
 import PageFooter from './components/page_footer/footer'
 import Navbar from './components/navbar/navbar';
 
@@ -16,6 +18,8 @@ function App() {
         <Route path="/" element={<ProblemPage />} />
         <Route path="/comparison" element={<ComparisonPage />} />
         <Route path="/presetmap" element={<PresetmapPage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/policy" element={<PolicyPage />} />
       </Routes>
       <PageFooter />
     </Router>

@@ -66,15 +66,12 @@
   /* width: 1126px; */
   max-width: 100%;
   /* margin: 0 auto; */
-  padding-top: var(--navbar-height);
   font-family: var(--mincraft-font);
   text-align: center;
   min-height: 100svh;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  background-image: url('../public/blocks/end_portal.png');
-  background-repeat: repeat;
 }
 
 body {

@@ -1,3 +1,9 @@
+.layout {
+  padding-top: var(--navbar-height);
+  flex-grow: 1;
+  background-repeat: repeat;
+}
+
 .counter {
   font-size: 16px;
   padding: 5px 10px;

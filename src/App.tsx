@@ -11,12 +11,12 @@ import PolicyPage from './pages/policy_page/policy_page';
 import PageFooter from './components/page_footer/footer';
 import Navbar from './components/navbar/navbar';
 
-import stoneBackground from "/blocks/stone.png";
+import dirtBackground from "/blocks/dirt.png";
 import lightBlueConcreteBackground from "/blocks/light_blue_concrete.png"
 import endPortalBackground from "/blocks/end_portal.png";
 
 const pageBackgrounds: Record<string, string> = {
-  "/": stoneBackground,
+  "/": dirtBackground,
   "/about": lightBlueConcreteBackground,
 };
 

@@ -13,6 +13,8 @@ export class AStarSearch<State, Action> implements SearchAlgorithm<State, Action
     }
 
     search(problem: SearchProblem<State, Action>): SearchResult<State, Action> {
+        const startTime = performance.now();
+
         const initialState = problem.initialState();
         const initialCost = 0;
         const initialH = this.heuristic.estimate(initialState);
@@ -33,17 +35,32 @@ export class AStarSearch<State, Action> implements SearchAlgorithm<State, Action
         const exploredList: State[] = [];
         const exploredSet = new Set<string>();
 
+        let nodesGenerated = 1;
+        let nodesExpanded = 0;
+        let maxFrontierSize = 1;
+
         while (!frontier.isEmpty()) {
             const currentNode = frontier.remove()!;
             const currentStateKey = problem.stateKey(currentNode.state);
 
             if (problem.isGoal(currentNode.state)) {
-                return this.buildResult(currentNode, exploredList, true);
+                const result = this.buildResult(
+                    currentNode,
+                    exploredList,
+                    true,
+                    nodesGenerated,
+                    nodesExpanded,
+                    maxFrontierSize
+                );
+
+                result.timeMs = performance.now() - startTime;
+                return result;
             }
 
             if (!exploredSet.has(currentStateKey)) {
                 exploredSet.add(currentStateKey);
                 exploredList.push(currentNode.state);
+                nodesExpanded++;
 
                 const successors = problem.getSuccessors(currentNode.state);
                 for (const successor of successors) {
@@ -72,8 +89,14 @@ export class AStarSearch<State, Action> implements SearchAlgorithm<State, Action
                         const priority = newCost + h;
 
                         frontier.add(childNode, priority);
+                        nodesGenerated++;
                     }
                 }
+
+                maxFrontierSize = Math.max(
+                    maxFrontierSize,
+                    frontier.size()
+                );
             }
         }
 
@@ -83,13 +106,20 @@ export class AStarSearch<State, Action> implements SearchAlgorithm<State, Action
             actions: [],
             explored: exploredList,
             cost: 0,
+            timeMs: performance.now() - startTime,
+            nodesGenerated,
+            nodesExpanded,
+            maxFrontierSize,
         };
     }
 
     private buildResult(
         goalNode: SearchNode<State, Action>,
         explored: State[],
-        found: boolean
+        found: boolean,
+        nodesGenerated: number,
+        nodesExpanded: number,
+        maxFrontierSize: number
     ): SearchResult<State, Action> {
         const path: State[] = [];
         const actions: Action[] = [];
@@ -109,6 +139,10 @@ export class AStarSearch<State, Action> implements SearchAlgorithm<State, Action
             actions,
             explored,
             cost: goalNode.cost,
+            timeMs: 0,
+            nodesGenerated,
+            nodesExpanded,
+            maxFrontierSize,
         };
     }
 }

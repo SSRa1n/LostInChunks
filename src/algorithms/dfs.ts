@@ -6,6 +6,8 @@ import { StackFrontier } from "../frontiers/stack_frontier";
 
 export class DepthFirstSearch<State, Action> implements SearchAlgorithm<State, Action> {
     search(problem: SearchProblem<State, Action>): SearchResult<State, Action> {
+        const startTime = performance.now();
+
         const initialState = problem.initialState();
         const initialNode: SearchNode<State, Action> = {
             state: initialState,
@@ -19,18 +21,33 @@ export class DepthFirstSearch<State, Action> implements SearchAlgorithm<State, A
         const exploredSet = new Set<string>();
         const exploredList: State[] = [];
 
+        let nodesGenerated = 1;
+        let nodesExpanded = 0;
+        let maxFrontierSize = 1;
+
         while (!frontier.isEmpty()) {
             const currentNode = frontier.remove()!;
             const currentStateKey = problem.stateKey(currentNode.state);
 
             // If we reached the goal, reconstruct and return the path
             if (problem.isGoal(currentNode.state)) {
-                return this.buildResult(currentNode, exploredList, true);
+                const result = this.buildResult(
+                    currentNode,
+                    exploredList,
+                    true,
+                    nodesGenerated,
+                    nodesExpanded,
+                    maxFrontierSize
+                );
+
+                result.timeMs = performance.now() - startTime;
+                return result;
             }
 
             if (!exploredSet.has(currentStateKey)) {
                 exploredSet.add(currentStateKey);
                 exploredList.push(currentNode.state);
+                nodesExpanded++;
 
                 // Expand successors
                 const successors = problem.getSuccessors(currentNode.state);
@@ -54,8 +71,14 @@ export class DepthFirstSearch<State, Action> implements SearchAlgorithm<State, A
                         };
 
                         frontier.add(childNode);
+                        nodesGenerated++;
                     }
                 }
+
+                maxFrontierSize = Math.max(
+                    maxFrontierSize,
+                    frontier.size()
+                );
             }
         }
 
@@ -66,13 +89,20 @@ export class DepthFirstSearch<State, Action> implements SearchAlgorithm<State, A
             actions: [],
             explored: exploredList,
             cost: 0,
+            timeMs: performance.now() - startTime,
+            nodesGenerated,
+            nodesExpanded,
+            maxFrontierSize,
         };
     }
 
     private buildResult(
         goalNode: SearchNode<State, Action>,
         explored: State[],
-        found: boolean
+        found: boolean,
+        nodesGenerated: number,
+        nodesExpanded: number,
+        maxFrontierSize: number
     ): SearchResult<State, Action> {
         const path: State[] = [];
         const actions: Action[] = [];
@@ -92,6 +122,10 @@ export class DepthFirstSearch<State, Action> implements SearchAlgorithm<State, A
             actions,
             explored,
             cost: goalNode.cost,
+            timeMs: 0,
+            nodesGenerated,
+            nodesExpanded,
+            maxFrontierSize,
         };
     }
 }

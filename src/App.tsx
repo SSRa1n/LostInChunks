@@ -12,12 +12,11 @@ import PageFooter from './components/page_footer/footer';
 import Navbar from './components/navbar/navbar';
 
 import dirtBackground from "/blocks/dirt.png";
-import lightBlueConcreteBackground from "/blocks/light_blue_concrete.png"
 import endPortalBackground from "/blocks/end_portal.png";
 
 const pageBackgrounds: Record<string, string> = {
   "/": dirtBackground,
-  "/about": lightBlueConcreteBackground,
+  "/about": dirtBackground,
 };
 
 function Layout() {
@@ -26,11 +25,14 @@ function Layout() {
   const background =
     pageBackgrounds[location.pathname] ?? endPortalBackground;
 
+  const backgrounddarkness =
+    pageBackgrounds[location.pathname] ? "rgba(0,0,0,0.3)" : "rgba(0,0,0,0)";
+
   return (
     <div
       className="layout"
       style={{
-        backgroundImage: `url(${background})`,
+        backgroundImage: `linear-gradient(${backgrounddarkness}), url(${background})`,
       }}
     >
       <Navbar />

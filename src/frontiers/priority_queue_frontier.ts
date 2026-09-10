@@ -21,4 +21,8 @@ export class PriorityQueueFrontier<T> implements Frontier<T> {
     isEmpty(): boolean {
         return this.items.length === 0;
     }
+
+    size(): number {
+        return this.items.length
+    }
 }

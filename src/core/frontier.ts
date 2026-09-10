@@ -5,4 +5,6 @@ export interface Frontier<T> {
     remove(): T | undefined;
 
     isEmpty(): boolean;
+
+    size(): number;
 }

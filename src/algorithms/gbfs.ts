@@ -2,24 +2,38 @@ import type { SearchAlgorithm } from "../core/search_algorithm";
 import type { SearchProblem } from "../core/search_problem";
 import type { SearchResult } from "../core/search_result";
 import type { SearchNode } from "../core/search_node";
-import { StackFrontier } from "../frontiers/stack_frontier";
+import type { Heuristic } from "../core/heuristic";
+import { PriorityQueueFrontier } from "../frontiers/priority_queue_frontier";
 
-export class DepthFirstSearch<State, Action> implements SearchAlgorithm<State, Action> {
+export class GreedyBestFirstSearch<State, Action> implements SearchAlgorithm<State, Action> {
+    private readonly heuristic: Heuristic<State>;
+
+    constructor(heuristic: Heuristic<State>) {
+        this.heuristic = heuristic;
+    }
+
     search(problem: SearchProblem<State, Action>): SearchResult<State, Action> {
         const startTime = performance.now();
 
         const initialState = problem.initialState();
+        const initialCost = 0;
+        const initialH = this.heuristic.estimate(initialState);
+
         const initialNode: SearchNode<State, Action> = {
             state: initialState,
-            cost: 0,
+            cost: initialCost,
             depth: 0,
         };
 
-        const frontier = new StackFrontier<SearchNode<State, Action>>();
-        frontier.add(initialNode);
+        const frontier = new PriorityQueueFrontier<SearchNode<State, Action>>();
+        // GBFS priority is purely the heuristic estimate (h)
+        frontier.add(initialNode, initialH);
 
-        const exploredSet = new Set<string>();
+        const costSoFar = new Map<string, number>();
+        costSoFar.set(problem.stateKey(initialState), initialCost);
+
         const exploredList: State[] = [];
+        const exploredSet = new Set<string>();
 
         let nodesGenerated = 1;
         let nodesExpanded = 0;
@@ -29,7 +43,6 @@ export class DepthFirstSearch<State, Action> implements SearchAlgorithm<State, A
             const currentNode = frontier.remove()!;
             const currentStateKey = problem.stateKey(currentNode.state);
 
-            // If we reached the goal, reconstruct and return the path
             if (problem.isGoal(currentNode.state)) {
                 const result = this.buildResult(
                     currentNode,
@@ -39,7 +52,6 @@ export class DepthFirstSearch<State, Action> implements SearchAlgorithm<State, A
                     nodesExpanded,
                     maxFrontierSize
                 );
-
                 result.timeMs = performance.now() - startTime;
                 return result;
             }
@@ -49,40 +61,36 @@ export class DepthFirstSearch<State, Action> implements SearchAlgorithm<State, A
                 exploredList.push(currentNode.state);
                 nodesExpanded++;
 
-                // Expand successors
                 const successors = problem.getSuccessors(currentNode.state);
                 for (const successor of successors) {
                     const nextStateKey = problem.stateKey(successor.state);
+                    const stepCost = problem.stepCost(currentNode.state, successor.state, successor.action);
+                    const newCost = currentNode.cost + stepCost;
 
-                    // Only push if it hasn't been explored yet
-                    if (!exploredSet.has(nextStateKey)) {
-                        const stepCost = problem.stepCost(
-                            currentNode.state,
-                            successor.state,
-                            successor.action
-                        );
+                    if (!costSoFar.has(nextStateKey) || newCost < costSoFar.get(nextStateKey)!) {
+                        costSoFar.set(nextStateKey, newCost);
 
                         const childNode: SearchNode<State, Action> = {
                             state: successor.state,
                             parent: currentNode,
                             action: successor.action,
-                            cost: currentNode.cost + stepCost,
+                            cost: newCost,
                             depth: currentNode.depth + 1,
                         };
 
-                        frontier.add(childNode);
+                        // GBFS Priority: ignore newCost, use ONLY heuristic (h)
+                        const h = this.heuristic.estimate(childNode.state);
+                        const priority = h;
+
+                        frontier.add(childNode, priority);
                         nodesGenerated++;
                     }
                 }
 
-                maxFrontierSize = Math.max(
-                    maxFrontierSize,
-                    frontier.size()
-                );
+                maxFrontierSize = Math.max(maxFrontierSize, frontier.size());
             }
         }
 
-        // Return empty result if frontier is exhausted and no goal found
         return {
             found: false,
             path: [],

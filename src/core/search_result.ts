@@ -9,4 +9,12 @@ export interface SearchResult<State, Action> {
     explored: State[];
     
     cost: number;
+
+    timeMs: number;
+
+    nodesGenerated: number;
+
+    nodesExpanded: number;
+    
+    maxFrontierSize: number;
 }

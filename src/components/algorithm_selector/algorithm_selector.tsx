@@ -15,8 +15,11 @@ export default function AlgorithmSelector({algorithm, onChange}: AlgorithmSelect
                 value={algorithm} 
                 onChange={(e) => onChange(e.target.value as AlgorithmType)}
             >
-                <option value="astar">A* Search</option>
                 <option value="dfs">Depth-First Search (DFS)</option>
+                <option value="astar">A* Search</option>
+                <option value="weighted-astar">Weighted A* Search</option>
+                <option value="ucs">Uniform Cost Search (UCS)</option>
+                <option value="gbfs">Greedy Best-First Search</option>
             </select>
         </div>
     )

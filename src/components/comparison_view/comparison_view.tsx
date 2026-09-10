@@ -47,8 +47,11 @@ export default function ComparisonView({ mazeData } : ComparisonViewProps) {
 
   const getAlgorithmName = (type: AlgorithmType) => {
     switch (type) {
-      case 'astar': return 'A* Search';
       case 'dfs': return 'Depth-First Search (DFS)';
+      case 'astar': return 'A* Search';
+      case 'weighted-astar': return 'Weighted A* Search';
+      case 'ucs': return 'Uniform Cost Search (UCS)';
+      case 'gbfs': return 'Greedy Best-First Search';
       default: return type;
     }
   };

@@ -5,13 +5,11 @@ import type { SearchNode } from "../core/search_node";
 import type { Heuristic } from "../core/heuristic";
 import { PriorityQueueFrontier } from "../frontiers/priority_queue_frontier";
 
-export class AStarSearch<State, Action> implements SearchAlgorithm<State, Action> {
+export class GreedyBestFirstSearch<State, Action> implements SearchAlgorithm<State, Action> {
     private readonly heuristic: Heuristic<State>;
-    private readonly weight: number;
 
-    constructor(heuristic: Heuristic<State>, weight: number = 1) {
+    constructor(heuristic: Heuristic<State>) {
         this.heuristic = heuristic;
-        this.weight = weight;
     }
 
     search(problem: SearchProblem<State, Action>): SearchResult<State, Action> {
@@ -28,9 +26,9 @@ export class AStarSearch<State, Action> implements SearchAlgorithm<State, Action
         };
 
         const frontier = new PriorityQueueFrontier<SearchNode<State, Action>>();
-        frontier.add(initialNode, initialCost + initialH);
+        // GBFS priority is purely the heuristic estimate (h)
+        frontier.add(initialNode, initialH);
 
-        // Keep track of the best g-score (cost) found for each state key
         const costSoFar = new Map<string, number>();
         costSoFar.set(problem.stateKey(initialState), initialCost);
 
@@ -54,7 +52,6 @@ export class AStarSearch<State, Action> implements SearchAlgorithm<State, Action
                     nodesExpanded,
                     maxFrontierSize
                 );
-
                 result.timeMs = performance.now() - startTime;
                 return result;
             }
@@ -67,15 +64,9 @@ export class AStarSearch<State, Action> implements SearchAlgorithm<State, Action
                 const successors = problem.getSuccessors(currentNode.state);
                 for (const successor of successors) {
                     const nextStateKey = problem.stateKey(successor.state);
-
-                    const stepCost = problem.stepCost(
-                        currentNode.state,
-                        successor.state,
-                        successor.action
-                    );
+                    const stepCost = problem.stepCost(currentNode.state, successor.state, successor.action);
                     const newCost = currentNode.cost + stepCost;
 
-                    // If we found a cheaper path to this state, or haven't visited it yet
                     if (!costSoFar.has(nextStateKey) || newCost < costSoFar.get(nextStateKey)!) {
                         costSoFar.set(nextStateKey, newCost);
 
@@ -87,18 +78,16 @@ export class AStarSearch<State, Action> implements SearchAlgorithm<State, Action
                             depth: currentNode.depth + 1,
                         };
 
+                        // GBFS Priority: ignore newCost, use ONLY heuristic (h)
                         const h = this.heuristic.estimate(childNode.state);
-                        const priority = newCost + this.weight * h;
+                        const priority = h;
 
                         frontier.add(childNode, priority);
                         nodesGenerated++;
                     }
                 }
 
-                maxFrontierSize = Math.max(
-                    maxFrontierSize,
-                    frontier.size()
-                );
+                maxFrontierSize = Math.max(maxFrontierSize, frontier.size());
             }
         }
 

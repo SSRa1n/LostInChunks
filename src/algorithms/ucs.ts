@@ -2,24 +2,17 @@ import type { SearchAlgorithm } from "../core/search_algorithm";
 import type { SearchProblem } from "../core/search_problem";
 import type { SearchResult } from "../core/search_result";
 import type { SearchNode } from "../core/search_node";
-import type { Heuristic } from "../core/heuristic";
 import { PriorityQueueFrontier } from "../frontiers/priority_queue_frontier";
 
-export class AStarSearch<State, Action> implements SearchAlgorithm<State, Action> {
-    private readonly heuristic: Heuristic<State>;
-    private readonly weight: number;
+export class UniformCostSearch<State, Action> implements SearchAlgorithm<State, Action> {
 
-    constructor(heuristic: Heuristic<State>, weight: number = 1) {
-        this.heuristic = heuristic;
-        this.weight = weight;
-    }
+    constructor() {}
 
     search(problem: SearchProblem<State, Action>): SearchResult<State, Action> {
         const startTime = performance.now();
 
         const initialState = problem.initialState();
         const initialCost = 0;
-        const initialH = this.heuristic.estimate(initialState);
 
         const initialNode: SearchNode<State, Action> = {
             state: initialState,
@@ -28,7 +21,7 @@ export class AStarSearch<State, Action> implements SearchAlgorithm<State, Action
         };
 
         const frontier = new PriorityQueueFrontier<SearchNode<State, Action>>();
-        frontier.add(initialNode, initialCost + initialH);
+        frontier.add(initialNode, initialCost);
 
         // Keep track of the best g-score (cost) found for each state key
         const costSoFar = new Map<string, number>();
@@ -87,8 +80,7 @@ export class AStarSearch<State, Action> implements SearchAlgorithm<State, Action
                             depth: currentNode.depth + 1,
                         };
 
-                        const h = this.heuristic.estimate(childNode.state);
-                        const priority = newCost + this.weight * h;
+                        const priority = newCost;
 
                         frontier.add(childNode, priority);
                         nodesGenerated++;

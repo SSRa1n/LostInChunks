@@ -2,12 +2,15 @@ import { type JSX } from "react";
 import type { MazeData } from "../../lib/generate_maze";
 import { BLOCKS } from "../../lib/blocks";
 import type { MazeState } from "../../problems/maze_problem";
+import styles from "./render_maze.module.css"
 
 type RenderMazeProps = {
     mazeData: MazeData;
     explored?: MazeState[];
     path?: MazeState[];
     renderCost?: boolean;
+    mazeWidth?: string;
+    mazeHeight?: string;
 };
 
 export default function RenderMaze({
@@ -15,16 +18,31 @@ export default function RenderMaze({
     explored = [],
     path = [],
     renderCost = false,
+    mazeWidth,
+    mazeHeight,
 }: RenderMazeProps): JSX.Element {
     const exploredSet = new Set(explored.map((s) => `${s.x},${s.y}`));
     const pathSet = new Set(path.map((s) => `${s.x},${s.y}`));
 
     const { grid: maze, costMap } = mazeData;
+    
+    const numRows = maze.length;
+    const numCols = maze[0]?.length || 1;
 
     return (
-        <>
+        <div 
+            className={styles.maze_wrapper}
+            style={
+                {
+                    ...(mazeWidth && { "--maze-width": mazeWidth }),
+                    ...(mazeHeight && { "--maze-height": mazeHeight }),
+                    "--maze-rows": numRows,
+                    "--maze-cols": numCols,
+                } as React.CSSProperties
+            }
+        >
             {maze.map((row, y) => (
-                <div className="maze-rows" key={y}>
+                <div className={styles.maze_rows} key={y}>
                     {row.map((block, x) => {
                         const key = `${x},${y}`;
 
@@ -46,15 +64,15 @@ export default function RenderMaze({
                         }
 
                         return (
-                            <div className="maze-cell" key={key}>
+                            <div className={styles.maze_cell} key={key}>
                                 <img
                                     src={image}
-                                    className="maze-block"
+                                    className={styles.maze_block}
                                     alt={alt}
                                 />
 
                                 {renderCost && (
-                                    <span className="cost-label" style={{ fontSize: "clamp(0.2rem, 2vw, 1rem)" }}>
+                                    <span className={styles.cost_label}>
                                         {costMap[y][x].cost === Infinity
                                             ? "∞"
                                             : costMap[y][x].cost}
@@ -65,6 +83,6 @@ export default function RenderMaze({
                     })}
                 </div>
             ))}
-        </>
+        </div>
     );
 }

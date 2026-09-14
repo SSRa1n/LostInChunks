@@ -139,7 +139,7 @@ export default function ProblemPage() {
               <img
                 src={block.filename}
                 alt={block.name}
-                className="maze-block"
+                className={styles.maze_block}
               />
 
               <div>

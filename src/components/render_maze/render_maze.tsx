@@ -1,7 +1,7 @@
 import { type JSX } from "react";
-import type { MazeData } from "./generate_maze";
-import { BLOCKS } from "./blocks";
-import type { MazeState } from "../problems/maze_problem";
+import type { MazeData } from "../../lib/generate_maze";
+import { BLOCKS } from "../../lib/blocks";
+import type { MazeState } from "../../problems/maze_problem";
 
 type RenderMazeProps = {
     mazeData: MazeData;

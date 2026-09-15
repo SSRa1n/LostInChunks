@@ -148,22 +148,6 @@
     margin: 0;
 }
 
-.close_button {
-    width: 40px;
-    height: 40px;
-    border: none;
-    border-radius: 50%;
-    font-size: 1.75rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    /* background: #f1f5f9; */
-}
-
-.close_button:hover {
-    background: #e2e8f0;
-}
 
 .metrics_container {
     display: grid;

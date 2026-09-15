@@ -8,6 +8,15 @@ export interface MazePosition {
     y: number;
 }
 
+export interface MazeOptions {
+    seed?: number;
+    alternativePathChance?: number;
+    maxInfinitePathObstacles?: number;
+    obstacleDensityMultiplier?: number;
+    startPosition?: MazePosition;
+    goalPosition?: MazePosition;
+}
+
 export class MazeData {
     readonly grid: Maze;
     readonly costMap: CostMap;
@@ -30,10 +39,28 @@ export class MazeData {
     }
 }
 
+// Simple seeded PRNG (Mulberry32)
+function createPrng(seed: number) {
+    return function(): number {
+        let t = seed += 0x6D2B79F5;
+        t = Math.imul(t ^ (t >>> 15), t | 1);
+        t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+}
+
 export function generateMaze(
     width: number,
     height: number,
+    options: MazeOptions = {},
 ): MazeData {
+    const seed = options.seed ?? Math.floor(Math.random() * 1000000);
+    const altPathChance = options.alternativePathChance ?? 0.1;
+    const maxInfPath = options.maxInfinitePathObstacles ?? 2;
+    const densityMultiplier = options.obstacleDensityMultiplier ?? 1.0;
+
+    const rng = createPrng(seed);
+
     // force odd dimensions
     width = width % 2 === 0 ? width + 1 : width;
     height = height % 2 === 0 ? height + 1 : height;
@@ -45,7 +72,7 @@ export function generateMaze(
 
     function shuffle<T>(arr: T[]): T[] {
         for (let i = arr.length - 1; i > 0; i--) {
-            const j = (Math.random() * (i + 1)) | 0; // Advanced rounding technique
+            const j = (rng() * (i + 1)) | 0; 
             [arr[i], arr[j]] = [arr[j], arr[i]];
         }
         return arr;
@@ -103,15 +130,15 @@ export function generateMaze(
                 maze[y][x - 1] === BLOCKS.BLOCK_PATH &&
                 maze[y][x + 1] === BLOCKS.BLOCK_PATH;
 
-            if ((vertical || horizontal) && Math.random() < 0.1) {
+            if ((vertical || horizontal) && rng() < altPathChance) {
                 maze[y][x] = BLOCKS.BLOCK_PATH;
             }
         }
     }
 
     // Define and place start and goal positions
-    const start: MazePosition = { x: 1, y: height - 2 };
-    const goal: MazePosition = { x: width - 2, y: 1 };
+    const start: MazePosition = options.startPosition ?? { x: 1, y: height - 2 };
+    const goal: MazePosition = options.goalPosition ?? { x: width - 2, y: 1 };
 
     maze[start.y][start.x] = BLOCKS.BLOCK_START;
     maze[goal.y][goal.x] = BLOCKS.BLOCK_GOAL;
@@ -129,14 +156,14 @@ export function generateMaze(
         }
     }
 
-    const max_inf_path = 2;
+    const max_inf_path = maxInfPath;
     let curr_inf_path = 0;
 
     for (const block of Object.values(BLOCKS).filter(b => b.is_obstacle)) {
 
         for (const [x, y] of walkable) {
-
-            if (Math.random() > block.path_spawn_chance)
+            const adjustedChance = Math.min(1, block.path_spawn_chance * densityMultiplier);
+            if (rng() > adjustedChance)
                 continue;
             if (block.cost_onroad === Infinity) {
                 curr_inf_path++;
@@ -149,8 +176,7 @@ export function generateMaze(
         }
 
         for (const [x, y] of void_tiles) {
-
-            if (Math.random() > block.void_spawn_chance)
+            if (rng() > block.void_spawn_chance)
                 continue;
 
             maze[y][x] = block;

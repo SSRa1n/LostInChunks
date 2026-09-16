@@ -1,0 +1,14 @@
+.aboutPage {
+  h1 {
+    text-shadow: 4px 4px 0 black;
+  }
+}
+
+.contributors {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding-bottom: 20px;
+}

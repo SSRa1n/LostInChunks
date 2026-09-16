@@ -7,10 +7,10 @@ import { enrichPreset } from '../../lib/generate_maze';
 export default function ProblemPage() {
   return (
     <div className={styles.container}>
-      <h1>&emsp;Problem Context</h1>
+      {/* <h1>&emsp;Problem Context</h1> */}
 
       <section>
-        --- maybe image of real mincraft setting here ---
+        {/* --- maybe image of real mincraft setting here --- */}
         <h2>Origin of the Problem</h2>
         <p>
           &emsp;This project models the problem of NPC pathfinding in a Minecraft-like

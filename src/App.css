@@ -1,6 +1,10 @@
 .layout {
   padding-top: var(--navbar-height);
   flex-grow: 1;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
   background-repeat: repeat;
 }
 

@@ -22,12 +22,14 @@ export class MazeData {
     readonly costMap: CostMap;
     readonly start: MazePosition;
     readonly goal: MazePosition;
+    readonly seed: number | undefined;
 
-    constructor(grid: Block[][], costMap: CostMap, start: MazePosition, goal: MazePosition) {
+    constructor(grid: Block[][], costMap: CostMap, start: MazePosition, goal: MazePosition, seed?: number) {
         this.grid = grid;
         this.costMap = costMap;
         this.start = start;
         this.goal = goal;
+        this.seed = seed
     }
 
     get width(): number {
@@ -200,7 +202,7 @@ export function generateMaze(
 
     const costMap = calculateCost(maze)
 
-    return new MazeData(maze, costMap, start, goal);
+    return new MazeData(maze, costMap, start, goal, seed);
 }
 
 export function enrichPreset(preset: Maze) {

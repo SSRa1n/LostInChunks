@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import type { AlgorithmType } from "../../lib/use_maze_search";
 import type { AnimationResult } from "../../lib/use_animation";
 import type { MazeData } from '../../lib/generate_maze';
-import RenderMaze from "../../lib/render_maze";
+import RenderMaze from "../render_maze/render_maze";
 import AnimationController from '../animation_controller/animation_controller';
 import AnimationStatus from '../animation_status/animation_status';
 import AlgorithmSelector from '../algorithm_selector/algorithm_selector';

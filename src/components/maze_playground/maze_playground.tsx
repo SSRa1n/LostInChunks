@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import type { MazeOptions, MazeData } from '../../lib/generate_maze'
 
 import styles from "./maze_playground.module.css";
-import RenderMaze from "../../lib/render_maze";
+import RenderMaze from "../render_maze/render_maze";
 
 type MazePlaygroundProps = {
     width: number;

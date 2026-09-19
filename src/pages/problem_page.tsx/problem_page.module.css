@@ -35,3 +35,8 @@
     margin-inline: auto;
     margin-top: 20px;
 }
+
+.maze_block {
+    width: 64px;
+    height: 64px;
+}

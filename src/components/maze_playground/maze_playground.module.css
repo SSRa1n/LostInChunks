@@ -1,0 +1,92 @@
+.container {
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.maze_container {
+    align-self: center;
+}
+
+.option_container {
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.header h2 {
+    margin: 0;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.field label {
+    font-weight: 600;
+}
+
+.field input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.5rem;
+}
+
+.field small {
+    color: #666;
+    font-size: 0.75rem;
+}
+
+.input_with_button {
+    display: flex;
+    gap: 0.35rem;
+}
+
+.input_with_button input {
+    flex: 1;
+}
+
+.input_with_button button {
+    padding: 0 0.75rem;
+}
+
+.position_section {
+    margin-top: 1.5rem;
+}
+
+.position_section h3 {
+    margin: 0 0 0.75rem;
+}
+
+.position_grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+@media (max-width: 700px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .header {
+        align-items: stretch;
+        flex-direction: column;
+    }
+}

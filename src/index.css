@@ -196,7 +196,7 @@ code {
   display: block;
   width: var(--navbar-icon-size);
   height: var(--navbar-icon-size);
-  background-image: url("../public/icon/web-icon-spritesheet-full.png");
+  background-image: url("../public/icon/web-icon-spritesheet-min.png");
   background-size: calc(var(--navbar-icon-size) * 16) var(--navbar-icon-size);
   background-repeat: no-repeat;
 

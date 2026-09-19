@@ -1,0 +1,42 @@
+[
+    {
+        "name": "Kurumizawaa",
+        "image": "https://cdn.discordapp.com/avatars/306728647501545473/e6558a6ebdccb1fda05b2a5eaf56123a.png?size=256",
+        "github": "https://github.com/Kurumizawaa",
+        "quote": "Will not use the provided font",
+        "position": "Backend Developer",
+        "contributions": ["Algorithm Design"]
+    },
+    {
+        "name": "SSRa1n",
+        "image": "https://avatars.githubusercontent.com/u/161915806",
+        "github": "https://github.com/SSRa1n",
+        "quote": "Full marks just from the navbar icon alone",
+        "position": "Frontend Developer",
+        "contributions": ["Maze Design", "Video"]
+    },
+    {
+        "name": "YwThammatorn",
+        "image": "https://avatars.githubusercontent.com/u/182520712",
+        "github": "https://github.com/YwThammatorn",
+        "quote": "Statement so profound he had a commit dedicated to him",
+        "position": "Frontend Developer",
+        "contributions": ["???"]
+    },
+    {
+        "name": "Bright-47",
+        "image": "https://cdn.discordapp.com/avatars/606003466728636439/af9ae72d83cee091266fe316bbc5ac1e.png?size=256",
+        "github": "https://github.com/Bright-47",
+        "quote": "???",
+        "position": "???",
+        "contributions": ["???"]
+    },
+    {
+        "name": "Onakice",
+        "image": "https://avatars.githubusercontent.com/u/175036240",
+        "github": "https://github.com/Onakice",
+        "quote": "???",
+        "position": "???",
+        "contributions": ["???"]
+    }
+]

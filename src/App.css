@@ -1,10 +1,15 @@
 .layout {
   padding-top: var(--navbar-height);
   flex-grow: 1;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
   background-repeat: repeat;
 }
 
-.vignette {
+.vignette::after {
+  content: "";
   position: fixed;
   top: 0;
   left: 0;
@@ -12,7 +17,6 @@
   height: 100%;
   box-shadow: inset 0 0 150px rgba(0, 0, 0, 0.9);
   pointer-events: none;
-  z-index: 9999;
 }
 
 .counter {

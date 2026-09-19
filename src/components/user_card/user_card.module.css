@@ -1,0 +1,104 @@
+.userCard {
+    display: flex;
+    flex-direction: column;
+    width: 350px;
+    min-height: 300px;
+
+    padding: 20px 30px;
+
+    border: 2px solid aliceblue;
+    border-radius: 10px;
+
+    background-color: rgba(0, 0, 0, 0.3);
+
+    a {
+        align-self: flex-start;
+        position: relative;
+        display: inline-block;
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        font: inherit;
+        color: aliceblue;
+        text-decoration: none;
+    }
+    
+    a::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        transform: scaleX(0);
+        height: 2px;
+        bottom: 0px;
+        left: 0;
+        background-color: aliceblue;
+        transform-origin: bottom right;
+        transition: transform 0.25s ease-out;
+    }
+
+    a:hover::after {
+        transform: scaleX(1);
+        transform-origin: bottom left;
+    }
+}
+
+.userInfo {
+    display: flex;
+    img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        margin-right: 10px;
+    }
+}
+
+.userDetails {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.5rem;
+    h1 {
+        text-align: start;
+        margin: 20px 0 0px 0;
+    }
+
+    h2 {
+        font-size: 36px;
+        font-size: clamp(24px, 2.5vw, 36px);
+        font-weight: 400;
+        text-align: start;
+        margin: 0;
+    }
+
+    h3 {
+        font-weight: 400;
+        text-align: start;
+        margin: 0;
+    }
+}
+
+.contributions {
+    text-align: start;
+    ul {
+        list-style-type: "- ";
+        margin: 0;
+    }
+}
+
+.quote {
+    margin: auto 0 20px 0;
+    h3 {
+        font-style: italic;
+        font-weight: 400;
+        margin: 20px 0 0 0;
+    }
+}
+
+.line {
+    width: 100%;
+    height: 2px;
+    margin: 10px 0;
+    background-color: aliceblue;
+    align-self: center;
+}

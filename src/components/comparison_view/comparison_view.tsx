@@ -153,11 +153,11 @@ export default function ComparisonView({ mazeData, onRegenerate, showRegenButton
 
               <button
                 type="button"
-                className={styles.close_button}
+                className="counter"
                 onClick={() => setShowMetrics(false)}
                 aria-label="Close metrics"
               >
-                ×
+                x
               </button>
             </div>
 

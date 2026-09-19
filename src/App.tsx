@@ -26,11 +26,11 @@ function Layout() {
     pageBackgrounds[location.pathname] ?? endPortalBackground;
 
   const backgrounddarkness =
-    pageBackgrounds[location.pathname] ? "rgba(0,0,0,0.3)" : "rgba(0,0,0,0)";
+    pageBackgrounds[location.pathname] ? "rgba(0,0,0,0.6)" : "rgba(0,0,0,0)";
 
   return (
     <div
-      className="layout"
+      className={`layout ${pageBackgrounds[location.pathname] ? "vignette" : ""}`}
       style={{
         backgroundImage: `linear-gradient(${backgrounddarkness}), url(${background})`,
       }}

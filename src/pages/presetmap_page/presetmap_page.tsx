@@ -20,7 +20,7 @@ export default function PresetmapPage() {
                     ))}
                 </select>
             </div>
-            <ComparisonView mazeData={enrichPreset(PRESETS[selectedPresetIndex])}/>
+            <ComparisonView mazeData={enrichPreset(PRESETS[selectedPresetIndex])} showRegenButton={false}/>
         </div>
     );
 }

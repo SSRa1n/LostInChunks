@@ -11,9 +11,11 @@ import styles from './comparison_view.module.css';
 
 type ComparisonViewProps = {
   mazeData?: MazeData;
+  onRegenerate?: () => void;
+  showRegenButton?: boolean;
 };
 
-export default function ComparisonView({ mazeData } : ComparisonViewProps) {
+export default function ComparisonView({ mazeData, onRegenerate, showRegenButton = true } : ComparisonViewProps) {
   const [masterMaze, setMasterMaze] = useState(mazeData ? mazeData : generateMaze(15, 11));
   const [mazeVersion, setMazeVersion] = useState(0);
   const [showLabels, setShowLabels] = useState(false);
@@ -27,8 +29,12 @@ export default function ComparisonView({ mazeData } : ComparisonViewProps) {
   }, [mazeData]);
 
   const regenerateMaze = () => {
-    setMasterMaze(generateMaze(15, 11));
-    setMazeVersion(prev => prev + 1);
+    if (onRegenerate) {
+      onRegenerate();
+    } else {
+      setMasterMaze(generateMaze(15, 11));
+      setMazeVersion(prev => prev + 1);
+    }
   };
 
   const [algorithm1, setAlgorithm1] = useState<AlgorithmType>('dfs');
@@ -62,7 +68,7 @@ export default function ComparisonView({ mazeData } : ComparisonViewProps) {
       <main className={styles.maze_section}>
 
         <div className={styles.util_container}>
-          {!mazeData && (
+          {showRegenButton && (
             <button
               type="button"
               onClick={regenerateMaze}

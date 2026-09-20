@@ -1,6 +1,6 @@
 import styles from './problem_page.module.css'
 import { BLOCKS, BLOCK_DESCRIPTION } from '../../lib/blocks';
-import RenderMaze from '../../lib/render_maze';
+import RenderMaze from '../../components/render_maze/render_maze';
 import { PRESETS } from "../../presets/map_presets";
 import { enrichPreset } from '../../lib/generate_maze';
 
@@ -139,7 +139,7 @@ export default function ProblemPage() {
               <img
                 src={block.filename}
                 alt={block.name}
-                className="maze-block"
+                className={styles.maze_block}
               />
 
               <div>

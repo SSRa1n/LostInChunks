@@ -45,7 +45,7 @@ function Layout() {
         <Route path="/policy" element={<PolicyPage />} />
       </Routes>
 
-      <PageFooter />
+      {/* <PageFooter /> */}
     </div>
   );
 }

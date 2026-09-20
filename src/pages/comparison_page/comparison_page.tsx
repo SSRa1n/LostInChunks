@@ -1,10 +1,13 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import ComparisonView from '../../components/comparison_view/comparison_view';
 import MazePlayground from '../../components/maze_playground/maze_playground';
 import { generateMaze, type MazeOptions, type MazeData } from '../../lib/generate_maze';
 import styles from './comparison_page.module.css';
+import SectionIndicator from '../../components/section_indicator/section_indicator';
 
 export default function ComparisonPage() {
+    const containerRef = useRef<HTMLDivElement>(null);
+
     const [width, setWidth] = useState<number>(15);
     const [height, setHeight] = useState<number>(11);
     const [options, setOptions] = useState<MazeOptions>({});
@@ -24,7 +27,7 @@ export default function ComparisonPage() {
     };
 
     return (
-        <div className={styles.container}>
+        <div className={styles.container} ref={containerRef}>
             <section className={styles.section}>
                 <MazePlayground 
                     width={width}
@@ -45,6 +48,8 @@ export default function ComparisonPage() {
                     onRegenerate={handleRegenerate}
                 />
             </section>
+
+            <SectionIndicator containerRef={containerRef} />
         </div>
     );
 }

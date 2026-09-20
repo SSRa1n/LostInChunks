@@ -6,3 +6,26 @@
         text-align: center;
     }
 }
+
+.presetmapPage {
+    height: calc(100vh - var(--navbar-height));
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+}
+
+.presetmapPage::-webkit-scrollbar {
+    display: none;
+}
+
+.section {
+    width: 100%;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-sizing: border-box;
+    overflow: hidden;
+}

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import styles from './problem_page.module.css'
 import { BLOCKS, BLOCK_DESCRIPTION } from '../../lib/blocks';
 import RenderMaze from '../../components/render_maze/render_maze';
@@ -207,6 +207,7 @@ export default function ProblemPage() {
   // const containerRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [direction, setDirection] = useState<"up" | "down">("down");
+  const scrollCooldown = useRef(false);
 
   const goToIndex = (index: number, dir: "up" | "down") => {
     if (index < 0 || index >= sections.length) return;
@@ -217,6 +218,13 @@ export default function ProblemPage() {
   useEffect(() => {
     const handleWheel = (event: WheelEvent) => {
       event.preventDefault();
+      if (scrollCooldown.current) return;
+
+      scrollCooldown.current = true;
+      window.setTimeout(() => {
+        scrollCooldown.current = false;
+      }, 400);
+
       if (event.deltaY > 0) {
         goToIndex(activeIndex + 1, "down");
       } else {
@@ -225,6 +233,12 @@ export default function ProblemPage() {
     };
 
     const handleKeyDown = (event: KeyboardEvent) => {
+      if (scrollCooldown.current) return;
+
+      scrollCooldown.current = true;
+      window.setTimeout(() => {
+        scrollCooldown.current = false;
+      }, 400);
       if (event.key === "ArrowDown") {
         event.preventDefault();
         goToIndex(activeIndex + 1, "down");

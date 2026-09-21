@@ -1,32 +1,87 @@
 .container {
     text-align: left;
-    height: calc(100vh - var(--navbar-height));
-    overflow-y: scroll;
-    scroll-snap-type: y mandatory;
-    scroll-behavior: smooth;
-    scrollbar-width: none;
-
-    section {
-        min-height: calc(100vh - var(--navbar-height));
+    position: relative;
+    height: calc(100svh - var(--navbar-height));
+    overflow: hidden;
+    .sections {
+        position: relative;
         width: 100%;
-        display: flex;
-        justify-content: center;
-        scroll-snap-align: start;
-        scroll-snap-stop: always;
+        height: 100%;
+    }
 
-        > div {
-            padding: 2rem 7rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+    .page-section {
+        position: absolute;
+        inset: 0;
+
+        height: 100%;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        padding: 20px;
+
+        opacity: 0;
+        visibility: hidden;
+
+        transform: translateY(75%);
+
+        transition:
+            transform 300ms cubic-bezier(0.77, 0, 0.175, 1),
+            opacity 300ms ease,
+            visibility 0s linear 300ms;
+
+        pointer-events: none;
+
+        div {
+            max-width: 80vw;
         }
     }
+    .page-section.page-active {
+        opacity: 1;
+        visibility: visible;
+
+        transform: translateY(0);
+
+        transition:
+            transform 300ms cubic-bezier(0.77, 0, 0.175, 1),
+            opacity 300ms ease;
+
+        z-index: 2;
+    }
+    .page-section.exit-up {
+        opacity: 0;
+        visibility: visible;
+        transform: translateY(-75%);
+        z-index: 3;
+
+        transition:
+            transform 300ms cubic-bezier(0.77, 0, 0.175, 1),
+            opacity 300ms ease;
+    }
+    .page-section.exit-down {
+        opacity: 0;
+        visibility: visible;
+        transform: translateY(75%);
+        z-index: 3;
+
+        transition:
+            transform 300ms cubic-bezier(0.77, 0, 0.175, 1),
+            opacity 300ms ease;
+    }
+
+}
+
+.block_card_container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
 }
 
 .block_card {
     display: flex;
     align-items: center;
     margin: 20px 0;
+    padding: 10px;
 
     img {
         image-rendering: pixelated;
@@ -44,6 +99,8 @@
 .maze_container {
     margin-inline: auto;
     margin-top: 20px;
+    display: flex;
+    justify-content: center;
 }
 
 .maze_block {

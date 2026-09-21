@@ -212,7 +212,6 @@ export default function ProblemPage() {
     if (index < 0 || index >= sections.length) return;
     setActiveIndex(index);
     setDirection(dir);
-    console.log(`Going to index ${index} in direction ${dir}`);
   };
 
   useEffect(() => {

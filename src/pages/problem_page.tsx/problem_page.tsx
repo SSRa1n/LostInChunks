@@ -289,7 +289,11 @@ export default function ProblemPage() {
             );
           })}    
       </div>
-      <SectionIndicator length={sections.length} activeIndex={activeIndex} />
+      <SectionIndicator
+        length={sections.length}
+        activeIndex={activeIndex}
+        onChange={(index) => goToIndex(index, index > activeIndex ? "down" : "up")}
+      />
     </div>
   );
 }

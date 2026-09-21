@@ -12,15 +12,6 @@
 }
 
 .indicator {
-    font-size: 50px;
-    transition: font-size 300ms ease;
-}
-
-.indicator.active {
-    font-size: 60px;
-}
-
-.indicator {
     filter: grayscale(100%);
     background: radial-gradient(circle at center,
         rgb(109, 255, 0) 0%,
@@ -33,14 +24,18 @@
         rgb(44, 113, 0) 100% 
     );
 
-    -webkit-appearance: none;
-    appearance: none;
     width: 20px;
     height: 20px;
     border: none; 
     border-radius: 50%;
 
     transition: filter 300ms ease, background 300ms ease, width 300ms ease, height 300ms ease;
+}
+
+.indicator:hover {
+    filter: grayscale(50%);
+    cursor: pointer;
+    transition: filter 300ms ease, background 300ms ease;
 }
 
 .indicator.active {

@@ -120,6 +120,15 @@ export default function Navbar() {
                 >
                     Preset Map
                 </NavLink>
+
+                <NavLink
+                    to="/about"
+                    className={({ isActive }) =>
+                        isActive ? styles.active : ''
+                    }
+                >
+                    About
+                </NavLink>
             </div>
         </nav>
     );

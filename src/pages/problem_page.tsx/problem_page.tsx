@@ -9,6 +9,7 @@ import SectionIndicator from '../../components/section_indicator/section_indicat
 const sections = [
   {
     id: 1,
+    title: "Origin of the Problem",
     content:
       <div>
         {/* --- maybe image of real minecraft setting here --- */}
@@ -37,6 +38,7 @@ const sections = [
   },
   {
     id: 2,
+    title: "Problem Definition",
     content:
       <div>
         <h2>Problem Definition</h2>
@@ -71,6 +73,7 @@ const sections = [
   },
   {
     id: 3,
+    title: "Goal",
     content:
       <div>
         <h2>Goal</h2>
@@ -96,6 +99,7 @@ const sections = [
   },
   {
     id: 4,
+    title: "Actions",
     content:
       <div>
         <h2>Actions</h2>
@@ -129,6 +133,7 @@ const sections = [
   },
   {
     id: 5,
+    title: "Environment",
     content:
       <div>
         <h2>Environment</h2>
@@ -168,6 +173,7 @@ const sections = [
   },
   {
     id: 6,
+    title: "Cost and Danger",
     content:
       <div>
         <h2>Cost and Danger</h2>
@@ -290,7 +296,7 @@ export default function ProblemPage() {
           })}    
       </div>
       <SectionIndicator
-        length={sections.length}
+        topics={sections.map(section => section.title)}
         activeIndex={activeIndex}
         onChange={(index) => goToIndex(index, index > activeIndex ? "down" : "up")}
       />

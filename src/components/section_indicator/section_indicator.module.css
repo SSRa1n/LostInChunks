@@ -1,14 +1,48 @@
+.indicatorWrapper {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 100%;
+    p {
+        font-size: 14px;
+        white-space: nowrap;
+        text-align: end;
+        position: absolute;
+        right: calc(50% + 20px);    
+        
+        visibility: hidden;
+        opacity: 0;
+        transform: translateX(50%);
+        transition: opacity 300ms ease,
+                    visibility 300ms ease,
+                    font-size 300ms ease,
+                    transform 300ms ease;
+    }
+}
+
 .indicatorContainer {
     position: fixed;
     top: 50%;
     transform: translateY(-50%);
     right: 20px;
-    width: 50px;
 
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 10px;
+}
+
+.indicatorContainer:hover p {
+    visibility: visible;
+    opacity: 0.5;
+    transform: translateX(0);
+}
+
+.indicatorContainer:hover p.active {
+    font-size: 22px;
+    opacity: 1;
 }
 
 .indicator {

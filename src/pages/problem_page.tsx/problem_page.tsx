@@ -16,8 +16,8 @@ const sections = [
         <h2>Origin of the Problem</h2>
         <p>
           &emsp;This project models the problem of NPC pathfinding in a Minecraft-like
-          environment. An NPC must travel from a starting location to a
-          destination while navigating a randomly generated maze containing
+          environment. An NPC must travel from a starting location to the
+          dedicated destination while navigating through a randomly generated maze that contains
           different types of terrain and hazards.
         </p>
 
@@ -30,9 +30,9 @@ const sections = [
 
         <p>
           &emsp;This creates a more interesting search problem: the NPC must balance
-          distance and danger when deciding which path to take. The project uses
-          classic AI search algorithms to investigate how different strategies
-          perform when searching for a low-cost path through this environment.
+          between distance and danger when choosing a path. The project uses
+          classical AI search algorithms to explore how different strategies
+          perform when searching for the safest path through this environment.
         </p>
       </div>
   },
@@ -45,8 +45,7 @@ const sections = [
         <p>
           &emsp;The environment is represented as a two-dimensional grid. Each cell in
           the grid contains a block representing a type of terrain or object.
-          The NPC occupies one cell at a time and can move between neighboring
-          cells.
+          The NPC occupies one cell at a time and can move to adjacent cells.
         </p>
 
         <p>
@@ -55,11 +54,11 @@ const sections = [
 
         <ul>
           <li>
-            <strong>Initial state:</strong> The location of the NPC at the start
+            <strong>Initial state:</strong> The location of the NPC at the starting point
             of the maze.
           </li>
           <li>
-            <strong>Goal state:</strong> The destination that the NPC must reach.
+            <strong>Goal state:</strong> The dedicated destination that the NPC must reach.
           </li>
           <li>
             <strong>Actions:</strong> Moving one cell up, down, left, or right.
@@ -83,7 +82,7 @@ const sections = [
         </p>
 
         <p>
-          &emsp;A path is therefore not judged only by how many cells the NPC travels
+          &emsp;A path is therefore not chosen only by how many cells the NPC travels
           through. Each block can have a different traversal cost, allowing the
           search algorithms to prefer safer routes when a dangerous shortcut is
           available.
@@ -105,7 +104,7 @@ const sections = [
         <h2>Actions</h2>
         <p>
           &emsp;At every position, the NPC can attempt to move to one of its four
-          neighboring cells:
+          adjacent cells:
         </p>
 
         <ul>
@@ -199,7 +198,7 @@ const sections = [
         <p>
           &emsp;As a result, the cost of a path is the sum of the costs incurred while
           moving through its cells. The optimal solution is therefore the path
-          with the lowest total cost rather than necessarily the path with the
+          with the lowest total cost rather than the path with the
           fewest movements.
         </p>
         <div className={styles.maze_container}>

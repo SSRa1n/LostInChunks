@@ -1,10 +1,12 @@
-import { useState, useEffect, useRef } from 'react';
 import styles from './problem_page.module.css'
 import { BLOCKS, BLOCK_DESCRIPTION } from '../../lib/blocks';
 import RenderMaze from '../../components/render_maze/render_maze';
 import { PRESETS } from "../../presets/map_presets";
 import { enrichPreset } from '../../lib/generate_maze';
+
 import SectionIndicator from '../../components/section_indicator/section_indicator';
+import { useSectionNavigation } from '../../lib/use_section_navigation';
+import { getSectionState } from '../../lib/section_navigation';
 
 const sections = [
   {
@@ -209,95 +211,29 @@ const sections = [
 ]
 
 export default function ProblemPage() {
-  // const containerRef = useRef<HTMLDivElement>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [direction, setDirection] = useState<"up" | "down">("down");
-  const scrollCooldown = useRef(false);
-
-  const goToIndex = (index: number, dir: "up" | "down") => {
-    if (index < 0 || index >= sections.length) return;
-    setActiveIndex(index);
-    setDirection(dir);
-  };
-
-  useEffect(() => {
-    const handleWheel = (event: WheelEvent) => {
-      event.preventDefault();
-      if (scrollCooldown.current) return;
-
-      scrollCooldown.current = true;
-      window.setTimeout(() => {
-        scrollCooldown.current = false;
-      }, 400);
-
-      if (event.deltaY > 0) {
-        goToIndex(activeIndex + 1, "down");
-      } else {
-        goToIndex(activeIndex - 1, "up");
-      }
-    };
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (scrollCooldown.current) return;
-
-      scrollCooldown.current = true;
-      window.setTimeout(() => {
-        scrollCooldown.current = false;
-      }, 400);
-      if (event.key === "ArrowDown") {
-        event.preventDefault();
-        goToIndex(activeIndex + 1, "down");
-      }
-
-      if (event.key === "ArrowUp") {
-        event.preventDefault();
-        goToIndex(activeIndex - 1, "up");
-      }
-    };
-
-    window.addEventListener("wheel", handleWheel, { passive: false });
-    window.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      window.removeEventListener("wheel", handleWheel);
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [activeIndex]);
+  const { activeIndex, direction, goToIndex } = useSectionNavigation(sections.length);
 
   return (
     <div className={styles.container}>
-      <div className={styles.sections}>
-        {
-          sections.map((section, index) => {
-            const isActive = index === activeIndex;
+        <div className={styles.sections}>
+          {sections.map((section, index) => {
+            const state = getSectionState(index, activeIndex, direction);
 
-            let state = '';
-
-            if (isActive) {
-              state = "page-active";
-            } else if (index === activeIndex - 1 && direction === "down") {
-              state = "exit-up";
-            } else if (index === activeIndex + 1 && direction === "up") {
-              state = "exit-down";
-            } else if (index < activeIndex) {
-              state = "exit-up";
-            } else if (index > activeIndex) {
-              state = "exit-down";
-            }
             return (
-              <section
-                key={section.id}
-                className={`${styles["page-section"]} ${state ? styles[state] : ""}`}
-              >
-                {section.content}
-              </section>
+                <section
+                    key={section.id}
+                    className={`${styles["page-section"]} ${state ? styles[state] : ""}`}
+                >
+                    {section.content}
+                </section>
             );
-          })}    
+          })}
       </div>
+
       <SectionIndicator
-        topics={sections.map(section => section.title)}
-        activeIndex={activeIndex}
-        onChange={(index) => goToIndex(index, index > activeIndex ? "down" : "up")}
+          topics={sections.map((section) => section.title)}
+          activeIndex={activeIndex}
+          onChange={(index) => goToIndex(index, index > activeIndex ? "down" : "up")}
       />
     </div>
   );

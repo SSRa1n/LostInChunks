@@ -11,6 +11,7 @@ type RenderMazeProps = {
     renderCost?: boolean;
     mazeWidth?: string;
     mazeHeight?: string;
+    onCellClick?: (x: number, y: number) => void;
 };
 
 export default function RenderMaze({
@@ -20,6 +21,7 @@ export default function RenderMaze({
     renderCost = false,
     mazeWidth,
     mazeHeight,
+    onCellClick,
 }: RenderMazeProps): JSX.Element {
     const exploredSet = new Set(explored.map((s) => `${s.x},${s.y}`));
     const pathSet = new Set(path.map((s) => `${s.x},${s.y}`));
@@ -64,7 +66,20 @@ export default function RenderMaze({
                         }
 
                         return (
-                            <div className={styles.maze_cell} key={key}>
+                            <div
+                                className={`${styles.maze_cell} ${onCellClick ? styles.selectable_cell : ""}`}
+                                key={key}
+                                role={onCellClick ? "button" : undefined}
+                                tabIndex={onCellClick ? 0 : undefined}
+                                aria-label={onCellClick ? `Select ${block.name} at ${x}, ${y}` : undefined}
+                                onClick={onCellClick ? () => onCellClick(x, y) : undefined}
+                                onKeyDown={onCellClick ? (event) => {
+                                    if (event.key === "Enter" || event.key === " ") {
+                                        event.preventDefault();
+                                        onCellClick(x, y);
+                                    }
+                                } : undefined}
+                            >
                                 <img
                                     src={image}
                                     className={styles.maze_block}

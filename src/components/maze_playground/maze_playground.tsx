@@ -4,8 +4,8 @@ import type { MazeOptions, MazeData } from '../../lib/generate_maze'
 import styles from "./maze_playground.module.css";
 import RenderMaze from "../render_maze/render_maze";
 
-const MAX_WIDTH = 100;
-const MAX_HEIGHT = 50;
+const MAX_WIDTH = 99;
+const MAX_HEIGHT = 49;
 
 type MazePlaygroundProps = {
     width: number;
@@ -28,6 +28,16 @@ type FormState = {
     goalY: number;
 };
 
+// Helper to ensure dimensions are always odd numbers within bounds
+const toOddRange = (val: number, min: number, max: number) => {
+    let n = Math.floor(val);
+    if (n % 2 === 0) {
+        n += 1; // Bump even numbers up to the next odd number
+    }
+    const maxOdd = max % 2 === 0 ? max - 1 : max;
+    return Math.min(maxOdd, Math.max(min, n));
+};
+
 export default function MazePlayground({
     width,
     height,
@@ -36,23 +46,23 @@ export default function MazePlayground({
     onGenerate,
 }: MazePlaygroundProps) {
     const [form, setForm] = useState<FormState>(() => ({
-        width: Math.min(MAX_WIDTH, Math.max(3, Math.floor(width))),
-        height: Math.min(MAX_HEIGHT, Math.max(3, Math.floor(height))),
+        width: toOddRange(width, 3, MAX_WIDTH),
+        height: toOddRange(height, 3, MAX_HEIGHT),
         seed: options.seed?.toString() ?? "",
         alternativePathChance: options.alternativePathChance ?? 0.1,
         maxInfinitePathObstacles: options.maxInfinitePathObstacles ?? 2,
         obstacleDensityMultiplier: options.obstacleDensityMultiplier ?? 1,
         startX: options.startPosition?.x ?? 1,
-        startY: options.startPosition?.y ?? height - 2,
-        goalX: options.goalPosition?.x ?? width - 2,
+        startY: options.startPosition?.y ?? toOddRange(height, 3, MAX_HEIGHT) - 2,
+        goalX: options.goalPosition?.x ?? toOddRange(width, 3, MAX_WIDTH) - 2,
         goalY: options.goalPosition?.y ?? 1,
     }));
     const [selectionTarget, setSelectionTarget] = useState<"start" | "goal" | null>(null);
 
     useEffect(() => {
         setForm(prev => {
-            const newWidth = Math.min(MAX_WIDTH, Math.max(3, Math.floor(width)));
-            const newHeight = Math.min(MAX_HEIGHT, Math.max(3, Math.floor(height)));
+            const newWidth = toOddRange(width, 3, MAX_WIDTH);
+            const newHeight = toOddRange(height, 3, MAX_HEIGHT);
             const maxX = Math.max(1, newWidth - 2);
             const maxY = Math.max(1, newHeight - 2);
 
@@ -72,42 +82,24 @@ export default function MazePlayground({
         field: keyof FormState,
         value: string
     ) => {
-        setForm(prev => {
-            const updated = { ...prev, [field]: value };
-
-            // Only update boundaries if the value is not empty and is a valid number
-            if (value !== "") {
-                const parsed = Number(value);
-                const validNum = Number.isFinite(parsed) ? parsed : 0;
-
-                if (field === "width") {
-                    const newWidth = Math.min(MAX_WIDTH, Math.floor(validNum));
-                    updated.width = newWidth;
-                    const maxX = Math.max(1, newWidth - 2);
-                    updated.startX = Math.min(updated.startX, maxX);
-                    updated.goalX = Math.min(updated.goalX, maxX);
-                } else if (field === "height") {
-                    const newHeight = Math.min(MAX_HEIGHT, Math.floor(validNum));
-                    updated.height = newHeight;
-                    const maxY = Math.max(1, newHeight - 2);
-                    updated.startY = Math.min(updated.startY, maxY);
-                    updated.goalY = Math.min(updated.goalY, maxY);
-                }
-            }
-
-            return updated;
-        });
+        setForm(prev => ({
+            ...prev,
+            [field]: value,
+        }));
     };
 
     const generate = () => {
-        // Fallback to defaults (15 and 11) if fields are left empty
-        const mazeWidth = form.width === "" || isNaN(Number(form.width)) 
-            ? 15 
-            : Math.min(MAX_WIDTH, Math.max(3, Math.floor(Number(form.width))));
-            
-        const mazeHeight = form.height === "" || isNaN(Number(form.height)) 
-            ? 11 
-            : Math.min(MAX_HEIGHT, Math.max(3, Math.floor(Number(form.height))));
+        const rawWidth = form.width === "" || isNaN(Number(form.width)) ? 15 : Number(form.width);
+        const rawHeight = form.height === "" || isNaN(Number(form.height)) ? 11 : Number(form.height);
+
+        const mazeWidth = toOddRange(rawWidth, 3, MAX_WIDTH);
+        const mazeHeight = toOddRange(rawHeight, 3, MAX_HEIGHT);
+
+        setForm(prev => ({
+            ...prev,
+            width: mazeWidth,
+            height: mazeHeight,
+        }));
 
         const maxX = Math.max(1, mazeWidth - 2);
         const maxY = Math.max(1, mazeHeight - 2);

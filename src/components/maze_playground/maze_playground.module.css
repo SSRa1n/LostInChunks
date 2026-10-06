@@ -42,7 +42,8 @@
     font-weight: 600;
 }
 
-.field input {
+.field input[type="number"],
+.field input[type="text"] {
     width: 100%;
     box-sizing: border-box;
     padding: 0.5rem;
@@ -51,6 +52,36 @@
 .field small {
     color: #666;
     font-size: 0.75rem;
+}
+
+.label_row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.value_badge {
+    width: 3rem;
+    font-size: 0.7rem;
+    background: transparent;
+    padding: 0.1rem 0.4rem;
+    border-radius: 4px;
+    border: 1px solid gray;
+    font-weight: 600;
+    color: var(--text);
+    margin-right: 0.5rem;
+}
+
+.range_group {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0.25rem 0;
+}
+
+.range_group input[type="range"] {
+    width: 100%;
+    cursor: pointer;
 }
 
 .input_with_button {
@@ -78,6 +109,17 @@
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1rem;
+}
+
+.actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.actions button {
+    flex: 1;
+    padding: 0.6rem;
 }
 
 @media (max-width: 700px) {

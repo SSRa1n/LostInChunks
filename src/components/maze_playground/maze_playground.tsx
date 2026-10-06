@@ -13,8 +13,8 @@ type MazePlaygroundProps = {
 };
 
 type FormState = {
-    width: number;
-    height: number;
+    width: number | string;
+    height: number | string;
     seed: string;
     alternativePathChance: number;
     maxInfinitePathObstacles: number;
@@ -68,22 +68,25 @@ export default function MazePlayground({
         field: keyof FormState,
         value: string
     ) => {
-        const parsed = Number(value);
-        const validNum = Number.isFinite(parsed) ? parsed : 0;
-
         setForm(prev => {
-            const updated = { ...prev, [field]: validNum };
+            const updated = { ...prev, [field]: value };
 
-            if (field === "width") {
-                const newWidth = Math.max(3, Math.floor(validNum));
-                const maxX = Math.max(1, newWidth - 2);
-                updated.startX = Math.min(updated.startX, maxX);
-                updated.goalX = Math.min(updated.goalX, maxX);
-            } else if (field === "height") {
-                const newHeight = Math.max(3, Math.floor(validNum));
-                const maxY = Math.max(1, newHeight - 2);
-                updated.startY = Math.min(updated.startY, maxY);
-                updated.goalY = Math.min(updated.goalY, maxY);
+            // Only update boundaries if the value is not empty and is a valid number
+            if (value !== "") {
+                const parsed = Number(value);
+                const validNum = Number.isFinite(parsed) ? parsed : 0;
+
+                if (field === "width") {
+                    const newWidth = Math.max(3, Math.floor(validNum));
+                    const maxX = Math.max(1, newWidth - 2);
+                    updated.startX = Math.min(updated.startX, maxX);
+                    updated.goalX = Math.min(updated.goalX, maxX);
+                } else if (field === "height") {
+                    const newHeight = Math.max(3, Math.floor(validNum));
+                    const maxY = Math.max(1, newHeight - 2);
+                    updated.startY = Math.min(updated.startY, maxY);
+                    updated.goalY = Math.min(updated.goalY, maxY);
+                }
             }
 
             return updated;
@@ -91,8 +94,14 @@ export default function MazePlayground({
     };
 
     const generate = () => {
-        const mazeWidth = Math.max(3, Math.floor(form.width));
-        const mazeHeight = Math.max(3, Math.floor(form.height));
+        // Fallback to defaults (15 and 11) if fields are left empty
+        const mazeWidth = form.width === "" || isNaN(Number(form.width)) 
+            ? 15 
+            : Math.max(3, Math.floor(Number(form.width)));
+            
+        const mazeHeight = form.height === "" || isNaN(Number(form.height)) 
+            ? 11 
+            : Math.max(3, Math.floor(Number(form.height)));
 
         const maxX = Math.max(1, mazeWidth - 2);
         const maxY = Math.max(1, mazeHeight - 2);
@@ -138,6 +147,47 @@ export default function MazePlayground({
         }));
     };
 
+    const resetForm = () => {
+        const defaultForm: FormState = {
+            width: 15,
+            height: 11,
+            seed: "",
+            alternativePathChance: 0.1,
+            maxInfinitePathObstacles: 2,
+            obstacleDensityMultiplier: 1,
+            startX: 1,
+            startY: 9,
+            goalX: 13,
+            goalY: 1,
+        };
+
+        setForm(defaultForm);
+        
+        const defaultOptions: MazeOptions = {
+            alternativePathChance: defaultForm.alternativePathChance,
+            maxInfinitePathObstacles: defaultForm.maxInfinitePathObstacles,
+            obstacleDensityMultiplier: defaultForm.obstacleDensityMultiplier,
+            startPosition: {
+                x: defaultForm.startX,
+                y: defaultForm.startY,
+            },
+            goalPosition: {
+                x: defaultForm.goalX,
+                y: defaultForm.goalY,
+            },
+        };
+
+        if (defaultForm.seed.trim() !== "") {
+            defaultOptions.seed = Math.floor(Number(defaultForm.seed));
+        }
+
+        onGenerate(
+            Number(defaultForm.width),
+            Number(defaultForm.height),
+            defaultOptions
+        );
+    };
+
     return (
         <section className={styles.container}>
             <div className={styles.maze_container}>
@@ -145,16 +195,8 @@ export default function MazePlayground({
             </div>  
             <div className={styles.option_container}>
                 <div className={styles.header}>
-                    <h2>Maze Generator </h2>
+                    <h2>Maze Generator</h2>
                     <small>Active Seed: {mazeData.seed}</small>
-
-                    <button
-                        type="button"
-                        onClick={generate}
-                        className="counter"
-                    >
-                        Generate Maze
-                    </button>
                 </div>
 
                 <div className={styles.grid}>
@@ -208,40 +250,57 @@ export default function MazePlayground({
                     </div>
 
                     <div className={styles.field}>
-                        <label htmlFor="alternative-path-chance">Alternative Path Chance</label>
-                        <input
-                            id="alternative-path-chance"
-                            type="number"
-                            min={0}
-                            max={1}
-                            step={0.01}
-                            value={form.alternativePathChance}
-                            onChange={e => updateNumber("alternativePathChance", e.target.value)}
-                        />
+                        <div className={styles.label_row}>
+                            <label htmlFor="alternative-path-chance">Alternative Path Chance</label>
+                        </div>
+                        <div className={styles.range_group}>
+                            <span className={styles.value_badge}>{form.alternativePathChance}</span>
+                            <input
+                                id="alternative-path-chance"
+                                type="range"
+                                min={0}
+                                max={1}
+                                step={0.01}
+                                value={form.alternativePathChance}
+                                onChange={e => updateNumber("alternativePathChance", e.target.value)}
+                            />
+                        </div>
                     </div>
 
                     <div className={styles.field}>
-                        <label htmlFor="obstacle-density">Obstacle Density</label>
-                        <input
-                            id="obstacle-density"
-                            type="number"
-                            min={0}
-                            step={0.05}
-                            value={form.obstacleDensityMultiplier}
-                            onChange={e => updateNumber("obstacleDensityMultiplier", e.target.value)}
-                        />
+                        <div className={styles.label_row}>
+                            <label htmlFor="obstacle-density">Obstacle Density</label>
+                        </div>
+                        <div className={styles.range_group}>
+                            <span className={styles.value_badge}>{form.obstacleDensityMultiplier}x</span>
+                            <input
+                                id="obstacle-density"
+                                type="range"
+                                min={0}
+                                max={10}
+                                step={0.05}
+                                value={form.obstacleDensityMultiplier}
+                                onChange={e => updateNumber("obstacleDensityMultiplier", e.target.value)}
+                            />
+                        </div>
                     </div>
 
                     <div className={styles.field}>
-                        <label htmlFor="max-infinite-obstacles">Max Infinite Obstacles</label>
-                        <input
-                            id="max-infinite-obstacles"
-                            type="number"
-                            min={0}
-                            step={1}
-                            value={form.maxInfinitePathObstacles}
-                            onChange={e => updateNumber("maxInfinitePathObstacles", e.target.value)}
-                        />
+                        <div className={styles.label_row}>
+                            <label htmlFor="max-infinite-obstacles">Max Infinite Obstacles</label>
+                        </div>
+                        <div className={styles.range_group}>
+                            <span className={styles.value_badge}>{form.maxInfinitePathObstacles}</span>
+                            <input
+                                id="max-infinite-obstacles"
+                                type="range"
+                                min={0}
+                                max={100}
+                                step={1}
+                                value={form.maxInfinitePathObstacles}
+                                onChange={e => updateNumber("maxInfinitePathObstacles", e.target.value)}
+                            />
+                        </div>
                     </div>
                 </div>
 
@@ -254,7 +313,7 @@ export default function MazePlayground({
                                 id="start-x"
                                 type="number"
                                 min={1}
-                                max={Math.max(1, form.width - 2)}
+                                max={Math.max(1, Number(form.width || 3) - 2)}
                                 value={form.startX}
                                 onChange={e => updateNumber("startX", e.target.value)}
                             />
@@ -265,7 +324,7 @@ export default function MazePlayground({
                                 id="start-y"
                                 type="number"
                                 min={1}
-                                max={Math.max(1, form.height - 2)}
+                                max={Math.max(1, Number(form.height || 3) - 2)}
                                 value={form.startY}
                                 onChange={e => updateNumber("startY", e.target.value)}
                             />
@@ -282,7 +341,7 @@ export default function MazePlayground({
                                 id="goal-x"
                                 type="number"
                                 min={1}
-                                max={Math.max(1, form.width - 2)}
+                                max={Math.max(1, Number(form.width || 3) - 2)}
                                 value={form.goalX}
                                 onChange={e => updateNumber("goalX", e.target.value)}
                             />
@@ -293,12 +352,30 @@ export default function MazePlayground({
                                 id="goal-y"
                                 type="number"
                                 min={1}
-                                max={Math.max(1, form.height - 2)}
+                                max={Math.max(1, Number(form.height || 3) - 2)}
                                 value={form.goalY}
                                 onChange={e => updateNumber("goalY", e.target.value)}
                             />
                         </div>
                     </div>
+                </div>
+
+                <div className={styles.actions}>
+                    <button
+                        type="button"
+                        onClick={generate}
+                        className="counter"
+                    >
+                        Generate Maze
+                    </button>
+
+                    <button
+                        type="button"
+                        onClick={resetForm}
+                        className="counter"
+                    >
+                        Reset
+                    </button>
                 </div>
             </div>
         </section>

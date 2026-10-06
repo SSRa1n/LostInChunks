@@ -8,13 +8,18 @@ import SectionIndicator from '../../components/section_indicator/section_indicat
 import { useSectionNavigation } from '../../lib/use_section_navigation';
 import { getSectionState } from '../../lib/section_navigation';
 
+import minecraftLandscape from '/minecraft_landscape.jpg'
+import problemDefinition from '/problem_definition.png'
+import problemGoal from '/problem_goal.png'
+import problemAction from '/problem_action.png'
+
 const sections = [
   {
     id: 1,
     title: "Origin of the Problem",
     content:
       <div>
-        {/* --- maybe image of real minecraft setting here --- */}
+        <img src={minecraftLandscape} className={styles.image_container}/>
         <h2>Origin of the Problem</h2>
         <p>
           &emsp;This project models the problem of NPC pathfinding in a Minecraft-like
@@ -43,6 +48,7 @@ const sections = [
     title: "Problem Definition",
     content:
       <div>
+        <img src={problemDefinition} className={styles.image_container}/>
         <h2>Problem Definition</h2>
         <p>
           &emsp;The environment is represented as a two-dimensional grid. Each cell in
@@ -77,6 +83,7 @@ const sections = [
     title: "Goal",
     content:
       <div>
+        <img src={problemGoal} className={styles.image_container}/>
         <h2>Goal</h2>
         <p>
           &emsp;The goal is to find a path from the starting position to the destination
@@ -103,6 +110,7 @@ const sections = [
     title: "Actions",
     content:
       <div>
+        <img src={problemAction} className={styles.image_container}/>
         <h2>Actions</h2>
         <p>
           &emsp;At every position, the NPC can attempt to move to one of its four

@@ -107,3 +107,9 @@
     width: 64px;
     height: 64px;
 }
+
+.image_container {
+    display: flex;
+    padding-bottom: 1rem;
+    margin: auto;
+}

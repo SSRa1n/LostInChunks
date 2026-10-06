@@ -24,6 +24,16 @@
     align-items: center;
 }
 
+.selectable_cell {
+    cursor: pointer;
+}
+
+.selectable_cell:hover,
+.selectable_cell:focus-visible {
+    outline: 2px solid var(--text);
+    outline-offset: -2px;
+}
+
 .maze_block {
     width: clamp(
         8px, 

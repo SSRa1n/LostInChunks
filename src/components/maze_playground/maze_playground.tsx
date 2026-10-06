@@ -4,6 +4,9 @@ import type { MazeOptions, MazeData } from '../../lib/generate_maze'
 import styles from "./maze_playground.module.css";
 import RenderMaze from "../render_maze/render_maze";
 
+const MAX_WIDTH = 100;
+const MAX_HEIGHT = 50;
+
 type MazePlaygroundProps = {
     width: number;
     height: number;
@@ -33,8 +36,8 @@ export default function MazePlayground({
     onGenerate,
 }: MazePlaygroundProps) {
     const [form, setForm] = useState<FormState>(() => ({
-        width,
-        height,
+        width: Math.min(MAX_WIDTH, Math.max(3, Math.floor(width))),
+        height: Math.min(MAX_HEIGHT, Math.max(3, Math.floor(height))),
         seed: options.seed?.toString() ?? "",
         alternativePathChance: options.alternativePathChance ?? 0.1,
         maxInfinitePathObstacles: options.maxInfinitePathObstacles ?? 2,
@@ -44,18 +47,19 @@ export default function MazePlayground({
         goalX: options.goalPosition?.x ?? width - 2,
         goalY: options.goalPosition?.y ?? 1,
     }));
+    const [selectionTarget, setSelectionTarget] = useState<"start" | "goal" | null>(null);
 
     useEffect(() => {
         setForm(prev => {
-            const newWidth = Math.max(3, Math.floor(width));
-            const newHeight = Math.max(3, Math.floor(height));
+            const newWidth = Math.min(MAX_WIDTH, Math.max(3, Math.floor(width)));
+            const newHeight = Math.min(MAX_HEIGHT, Math.max(3, Math.floor(height)));
             const maxX = Math.max(1, newWidth - 2);
             const maxY = Math.max(1, newHeight - 2);
 
             return {
                 ...prev,
-                width,
-                height,
+                width: newWidth,
+                height: newHeight,
                 startX: Math.min(prev.startX, maxX),
                 startY: Math.min(prev.startY, maxY),
                 goalX: Math.min(prev.goalX, maxX),
@@ -77,12 +81,14 @@ export default function MazePlayground({
                 const validNum = Number.isFinite(parsed) ? parsed : 0;
 
                 if (field === "width") {
-                    const newWidth = Math.max(3, Math.floor(validNum));
+                    const newWidth = Math.min(MAX_WIDTH, Math.floor(validNum));
+                    updated.width = newWidth;
                     const maxX = Math.max(1, newWidth - 2);
                     updated.startX = Math.min(updated.startX, maxX);
                     updated.goalX = Math.min(updated.goalX, maxX);
                 } else if (field === "height") {
-                    const newHeight = Math.max(3, Math.floor(validNum));
+                    const newHeight = Math.min(MAX_HEIGHT, Math.floor(validNum));
+                    updated.height = newHeight;
                     const maxY = Math.max(1, newHeight - 2);
                     updated.startY = Math.min(updated.startY, maxY);
                     updated.goalY = Math.min(updated.goalY, maxY);
@@ -97,11 +103,11 @@ export default function MazePlayground({
         // Fallback to defaults (15 and 11) if fields are left empty
         const mazeWidth = form.width === "" || isNaN(Number(form.width)) 
             ? 15 
-            : Math.max(3, Math.floor(Number(form.width)));
+            : Math.min(MAX_WIDTH, Math.max(3, Math.floor(Number(form.width))));
             
         const mazeHeight = form.height === "" || isNaN(Number(form.height)) 
             ? 11 
-            : Math.max(3, Math.floor(Number(form.height)));
+            : Math.min(MAX_HEIGHT, Math.max(3, Math.floor(Number(form.height))));
 
         const maxX = Math.max(1, mazeWidth - 2);
         const maxY = Math.max(1, mazeHeight - 2);
@@ -188,10 +194,33 @@ export default function MazePlayground({
         );
     };
 
+    const selectMazePosition = (x: number, y: number) => {
+        if (!selectionTarget) {
+            return;
+        }
+
+        const mazeY = y + 1;
+        const maxX = Math.max(1, Math.floor(Number(form.width || 3)) - 2);
+        const maxY = Math.max(1, Math.floor(Number(form.height || 3)) - 2);
+
+        if (x < 1 || x > maxX || mazeY < 1 || mazeY > maxY) {
+            return;
+        }
+
+        setForm(prev => selectionTarget === "start"
+            ? { ...prev, startX: x, startY: mazeY }
+            : { ...prev, goalX: x, goalY: mazeY }
+        );
+        setSelectionTarget(null);
+    };
+
     return (
         <section className={styles.container}>
             <div className={styles.maze_container}>
-                <RenderMaze mazeData={mazeData}/>
+                <RenderMaze
+                    mazeData={mazeData}
+                    onCellClick={selectionTarget ? selectMazePosition : undefined}
+                />
             </div>  
             <div className={styles.option_container}>
                 <div className={styles.header}>
@@ -206,6 +235,7 @@ export default function MazePlayground({
                             id="maze-width"
                             type="number"
                             min={3}
+                            max={MAX_WIDTH}
                             step={2}
                             value={form.width}
                             onChange={e => updateNumber("width", e.target.value)}
@@ -218,6 +248,7 @@ export default function MazePlayground({
                             id="maze-height"
                             type="number"
                             min={3}
+                            max={MAX_HEIGHT}
                             step={2}
                             value={form.height}
                             onChange={e => updateNumber("height", e.target.value)}
@@ -305,8 +336,20 @@ export default function MazePlayground({
                 </div>
 
                 <div className={styles.position_section}>
-                    <h3>Start Position</h3>
+                    <div className={styles.position_header}>
+                        <h3>Start Position</h3>
+                    </div>
                     <div className={styles.position_grid}>
+                        <button
+                            type="button"
+                            className="counter"
+                            aria-pressed={selectionTarget === "start"}
+                            onClick={() => setSelectionTarget(
+                                selectionTarget === "start" ? null : "start"
+                            )}
+                        >
+                            {selectionTarget === "start" ? "Cancel" : "Set Start"}
+                        </button>
                         <div className={styles.field}>
                             <label htmlFor="start-x">X</label>
                             <input
@@ -333,8 +376,20 @@ export default function MazePlayground({
                 </div>
 
                 <div className={styles.position_section}>
-                    <h3>Goal Position</h3>
+                    <div className={styles.position_header}>
+                        <h3>Goal Position</h3>
+                    </div>
                     <div className={styles.position_grid}>
+                        <button
+                            type="button"
+                            className="counter"
+                            aria-pressed={selectionTarget === "goal"}
+                            onClick={() => setSelectionTarget(
+                                selectionTarget === "goal" ? null : "goal"
+                            )}
+                        >
+                            {selectionTarget === "goal" ? "Cancel" : "Set Goal"}
+                        </button>
                         <div className={styles.field}>
                             <label htmlFor="goal-x">X</label>
                             <input
@@ -359,6 +414,13 @@ export default function MazePlayground({
                         </div>
                     </div>
                 </div>
+
+                {selectionTarget && (
+                    <p className={styles.selection_hint}>
+                        Click an interior maze tile to set the {selectionTarget} position.
+                        Generate Maze to apply the change.
+                    </p>
+                )}
 
                 <div className={styles.actions}>
                     <button

@@ -24,6 +24,7 @@
 
 .indicatorContainer {
     position: fixed;
+    z-index: 4;
     top: 50%;
     transform: translateY(-50%);
     right: 20px;

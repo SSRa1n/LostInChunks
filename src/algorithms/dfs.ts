@@ -21,6 +21,9 @@ export class DepthFirstSearch<State, Action> implements SearchAlgorithm<State, A
         const exploredSet = new Set<string>();
         const exploredList: State[] = [];
 
+        const frontierSet = new Set<string>();
+        frontierSet.add(problem.stateKey(initialState));
+
         let nodesGenerated = 1;
         let nodesExpanded = 0;
         let maxFrontierSize = 1;
@@ -29,7 +32,8 @@ export class DepthFirstSearch<State, Action> implements SearchAlgorithm<State, A
             const currentNode = frontier.remove()!;
             const currentStateKey = problem.stateKey(currentNode.state);
 
-            // If we reached the goal, reconstruct and return the path
+            frontierSet.delete(currentStateKey);
+
             if (problem.isGoal(currentNode.state)) {
                 const result = this.buildResult(
                     currentNode,
@@ -51,11 +55,14 @@ export class DepthFirstSearch<State, Action> implements SearchAlgorithm<State, A
 
                 // Expand successors
                 const successors = problem.getSuccessors(currentNode.state);
+
                 for (const successor of successors) {
                     const nextStateKey = problem.stateKey(successor.state);
 
-                    // Only push if it hasn't been explored yet
-                    if (!exploredSet.has(nextStateKey)) {
+                    if (
+                        !exploredSet.has(nextStateKey) &&
+                        !frontierSet.has(nextStateKey)
+                    ) {
                         const stepCost = problem.stepCost(
                             currentNode.state,
                             successor.state,
@@ -71,6 +78,7 @@ export class DepthFirstSearch<State, Action> implements SearchAlgorithm<State, A
                         };
 
                         frontier.add(childNode);
+                        frontierSet.add(nextStateKey);
                         nodesGenerated++;
                     }
                 }

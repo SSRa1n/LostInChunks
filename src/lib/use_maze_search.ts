@@ -6,8 +6,10 @@ import { MazeManhattanHeuristic } from '../heuristics/manhattan_heuristic';
 import type { MazeData } from '../lib/generate_maze';
 import { GreedyBestFirstSearch } from '../algorithms/gbfs';
 import { UniformCostSearch } from '../algorithms/ucs';
+import { IterativeDeepeningSearch } from '../algorithms/ids';
+import { BreadthFirstSearch } from '../algorithms/bfs';
 
-export type AlgorithmType = 'astar' | 'dfs' | 'weighted-astar' | 'gbfs' | 'ucs';
+export type AlgorithmType = 'astar' | 'dfs' | 'weighted-astar' | 'gbfs' | 'ucs' | 'bfs' | 'ids';
 
 export function useMazeSearch(
     mazeData: MazeData, 
@@ -31,9 +33,15 @@ export function useMazeSearch(
             const heuristic = new MazeManhattanHeuristic(problem.goalState());
             const gbfs = new GreedyBestFirstSearch<MazeState, MazeAction>(heuristic);
             return gbfs.search(problem);
-        } else {
+        } else if (algorithmType === 'ucs') {
             const ucs = new UniformCostSearch<MazeState, MazeAction>();
             return ucs.search(problem);
+        } else if (algorithmType === 'ids') {
+            const ids = new IterativeDeepeningSearch<MazeState, MazeAction>();
+            return ids.search(problem);
+        } else {
+            const bfs = new BreadthFirstSearch<MazeState, MazeAction>();
+            return bfs.search(problem);
         }
     }, [mazeData, algorithmType]);
 

@@ -53,10 +53,12 @@ export default function ComparisonView({ mazeData, onRegenerate, showRegenButton
 
   const getAlgorithmName = (type: AlgorithmType) => {
     switch (type) {
+      case 'bfs': return 'Breadth-First Search (BFS)';
       case 'dfs': return 'Depth-First Search (DFS)';
+      case 'ids': return 'Iterative Deepening Search (IDS)'
+      case 'ucs': return 'Uniform Cost Search (UCS)';
       case 'astar': return 'A* Search';
       case 'weighted-astar': return 'Weighted A* Search';
-      case 'ucs': return 'Uniform Cost Search (UCS)';
       case 'gbfs': return 'Greedy Best-First Search';
       default: return type;
     }

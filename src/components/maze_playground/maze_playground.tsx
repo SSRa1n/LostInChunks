@@ -62,6 +62,7 @@ export default function MazePlayground({
         randomizeGoal: options.randomizeGoal ?? false,
     }));
     const [selectionTarget, setSelectionTarget] = useState<"start" | "goal" | null>(null);
+    const [copied, setCopied] = useState(false);
 
     useEffect(() => {
         setForm(prev => {
@@ -213,6 +214,16 @@ export default function MazePlayground({
         setSelectionTarget(null);
     };
 
+    const copySeed = async () => {
+        try {
+            await navigator.clipboard.writeText(String(mazeData.seed));
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
+        } catch (err) {
+            console.error("Failed to copy seed: ", err);
+        }
+    };
+
     return (
         <section className={styles.container}>
             <div className={styles.maze_container}>
@@ -224,7 +235,33 @@ export default function MazePlayground({
             <div className={styles.option_container}>
                 <div className={styles.header}>
                     <h2>Maze Generator</h2>
-                    <small>Active Seed: {mazeData.seed}</small>
+                    <div className={styles.seed_container}>
+                        <small>Active Seed: {mazeData.seed}</small>
+                        <button
+                            type="button"
+                            className={styles.copy_button}
+                            onClick={copySeed}
+                            title="Copy active seed"
+                        >
+                            {copied ? (
+                                <span className={styles.copy_success}>✓</span>
+                            ) : (
+                                <svg
+                                    className={styles.copy_icon}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                >
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            )}
+                        </button>
+                    </div>
                 </div>
 
                 <div className={styles.grid}>

@@ -181,3 +181,39 @@
         grid-template-columns: 1fr 1fr;
     }
 }
+
+.seed_container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.copy_button {
+    background: transparent;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 0.2rem 0.35rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.copy_button:hover {
+    background: rgba(0, 0, 0, 0.05);
+    border-color: #888;
+}
+
+.copy_icon {
+    width: 14px;
+    height: 14px;
+    color: var(--text, #333);
+}
+
+.copy_success {
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: lightgreen;
+    line-height: 1;
+}

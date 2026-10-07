@@ -4,13 +4,22 @@
     --maze-rows: 9;
     --maze-cols: 15;
 
+    --block-size: clamp(
+        8px, 
+        min(
+            calc(var(--maze-width) / var(--maze-cols)), 
+            calc(var(--maze-height) / var(--maze-rows))
+        ), 
+        64px
+    );
+
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 
-    width: var(--maze-width, 40vw);
-    height: var(--maze-height, 40vh);
+    width: var(--maze-width);
+    height: var(--maze-height);
 }
 
 .maze_rows {
@@ -22,6 +31,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    width: var(--block-size);
+    height: var(--block-size);
 }
 
 .selectable_cell {
@@ -35,22 +46,8 @@
 }
 
 .maze_block {
-    width: clamp(
-        8px, 
-        min(
-            calc(var(--maze-width, 40vw) / var(--maze-cols)), 
-            calc(var(--maze-height, 40vh) / var(--maze-rows))
-        ), 
-        64px
-    );
-    height: clamp(
-        8px, 
-        min(
-            calc(var(--maze-width, 40vw) / var(--maze-cols)), 
-            calc(var(--maze-height, 40vh) / var(--maze-rows))
-        ), 
-        64px
-    );
+    width: var(--block-size);
+    height: var(--block-size);
     image-rendering: pixelated;
 }
 
@@ -62,7 +59,7 @@
 
     color: white;
     font-weight: bold;
-    font-size: clamp(0.1rem, calc(30vw / var(--maze-cols)), 1rem);
+    font-size: clamp(9px, calc(var(--block-size) * 0.5), 18px);
 
     text-shadow:
         1px 1px 2px black,

@@ -26,6 +26,8 @@ type FormState = {
     startY: number;
     goalX: number;
     goalY: number;
+    randomizeStart: boolean;
+    randomizeGoal: boolean;
 };
 
 // Helper to ensure dimensions are always odd numbers within bounds
@@ -56,6 +58,8 @@ export default function MazePlayground({
         startY: options.startPosition?.y ?? toOddRange(height, 3, MAX_HEIGHT) - 2,
         goalX: options.goalPosition?.x ?? toOddRange(width, 3, MAX_WIDTH) - 2,
         goalY: options.goalPosition?.y ?? 1,
+        randomizeStart: options.randomizeStart ?? false,
+        randomizeGoal: options.randomizeGoal ?? false,
     }));
     const [selectionTarget, setSelectionTarget] = useState<"start" | "goal" | null>(null);
 
@@ -124,11 +128,12 @@ export default function MazePlayground({
                 x: Math.min(Math.max(1, Math.floor(form.startX)), maxX),
                 y: Math.min(Math.max(1, Math.floor(form.startY)), maxY),
             },
-
             goalPosition: {
                 x: Math.min(Math.max(1, Math.floor(form.goalX)), maxX),
                 y: Math.min(Math.max(1, Math.floor(form.goalY)), maxY),
             },
+            randomizeStart: form.randomizeStart,
+            randomizeGoal: form.randomizeGoal,
         };
 
         if (form.seed.trim() !== "") {
@@ -157,6 +162,8 @@ export default function MazePlayground({
             startY: 9,
             goalX: 13,
             goalY: 1,
+            randomizeStart: false,
+            randomizeGoal: false,
         };
 
         setForm(defaultForm);
@@ -332,10 +339,19 @@ export default function MazePlayground({
                         <h3>Start Position</h3>
                     </div>
                     <div className={styles.position_grid}>
+                        <label className={styles.checkbox_label}>
+                            <input
+                                type="checkbox"
+                                checked={form.randomizeStart}
+                                onChange={e => setForm(prev => ({ ...prev, randomizeStart: e.target.checked }))}
+                            />
+                            Randomize
+                        </label>
                         <button
                             type="button"
                             className="counter"
                             aria-pressed={selectionTarget === "start"}
+                            disabled={form.randomizeStart}
                             onClick={() => setSelectionTarget(
                                 selectionTarget === "start" ? null : "start"
                             )}
@@ -350,6 +366,7 @@ export default function MazePlayground({
                                 min={1}
                                 max={Math.max(1, Number(form.width || 3) - 2)}
                                 value={form.startX}
+                                disabled={form.randomizeStart}
                                 onChange={e => updateNumber("startX", e.target.value)}
                             />
                         </div>
@@ -361,6 +378,7 @@ export default function MazePlayground({
                                 min={1}
                                 max={Math.max(1, Number(form.height || 3) - 2)}
                                 value={form.startY}
+                                disabled={form.randomizeStart}
                                 onChange={e => updateNumber("startY", e.target.value)}
                             />
                         </div>
@@ -372,10 +390,19 @@ export default function MazePlayground({
                         <h3>Goal Position</h3>
                     </div>
                     <div className={styles.position_grid}>
+                        <label className={styles.checkbox_label}>
+                            <input
+                                type="checkbox"
+                                checked={form.randomizeGoal}
+                                onChange={e => setForm(prev => ({ ...prev, randomizeGoal: e.target.checked }))}
+                            />
+                            Randomize
+                        </label>
                         <button
                             type="button"
                             className="counter"
                             aria-pressed={selectionTarget === "goal"}
+                            disabled={form.randomizeGoal}
                             onClick={() => setSelectionTarget(
                                 selectionTarget === "goal" ? null : "goal"
                             )}
@@ -390,6 +417,7 @@ export default function MazePlayground({
                                 min={1}
                                 max={Math.max(1, Number(form.width || 3) - 2)}
                                 value={form.goalX}
+                                disabled={form.randomizeGoal}
                                 onChange={e => updateNumber("goalX", e.target.value)}
                             />
                         </div>
@@ -401,6 +429,7 @@ export default function MazePlayground({
                                 min={1}
                                 max={Math.max(1, Number(form.height || 3) - 2)}
                                 value={form.goalY}
+                                disabled={form.randomizeGoal}
                                 onChange={e => updateNumber("goalY", e.target.value)}
                             />
                         </div>

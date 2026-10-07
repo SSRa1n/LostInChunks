@@ -15,6 +15,8 @@ export interface MazeOptions {
     obstacleDensityMultiplier?: number;
     startPosition?: MazePosition;
     goalPosition?: MazePosition;
+    randomizeStart?: boolean;
+    randomizeGoal?: boolean;
 }
 
 export class MazeData {
@@ -139,13 +141,22 @@ export function generateMaze(
     }
 
     // Define and place start and goal positions
-    const start: MazePosition = options.startPosition 
-        ? { ...options.startPosition } 
-        : { x: 1, y: height - 2 };
+    const getRandomPosition = (max: number) => {
+        const position = Math.floor(Math.random() * max) + 1;
+        return Math.min(max, position % 2 === 0 ? position + 1 : position);
+    };
+
+    const start: MazePosition = options.randomizeStart
+        ? { x: getRandomPosition(width - 2), y: getRandomPosition(height - 2) }
+        : options.startPosition
+            ? { ...options.startPosition }
+            : { x: 1, y: height - 2 };
         
-    const goal: MazePosition = options.goalPosition 
-        ? { ...options.goalPosition } 
-        : { x: width - 2, y: 1 };
+    const goal: MazePosition = options.randomizeGoal
+        ? { x: getRandomPosition(width - 2), y: getRandomPosition(height - 2) }
+        : options.goalPosition
+            ? { ...options.goalPosition }
+            : { x: width - 2, y: 1 };
 
     maze[start.y][start.x] = BLOCKS.BLOCK_START;
     maze[goal.y][goal.x] = BLOCKS.BLOCK_GOAL;

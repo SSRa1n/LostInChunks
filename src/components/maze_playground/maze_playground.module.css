@@ -49,6 +49,11 @@
     padding: 0.5rem;
 }
 
+.field input:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
 .field small {
     color: #666;
     font-size: 0.75rem;
@@ -117,9 +122,29 @@
 
 .position_grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
+    grid-template-columns: auto repeat(3, minmax(0, 1fr));
     align-items: end;
     gap: 1rem;
+}
+
+.checkbox_label {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: 500;
+    height: 2rem;
+    margin-bottom: 0;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.checkbox_label input[type="checkbox"] {
+    cursor: pointer;
+}
+
+.position_grid > button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
 }
 
 .position_grid > button {
@@ -150,5 +175,9 @@
     .header {
         align-items: stretch;
         flex-direction: column;
+    }
+
+    .position_grid {
+        grid-template-columns: 1fr 1fr;
     }
 }

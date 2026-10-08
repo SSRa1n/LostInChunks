@@ -3,6 +3,7 @@ import styles from './about_page.module.css'
 import UserCard from '../../components/user_card/user_card'
 
 import { useEffect, useState } from 'react';
+import PageFooter from '../../components/page_footer/footer';
 
 type Member = {
   name: string;
@@ -36,6 +37,7 @@ export default function AboutPage() {
             contributions={member.contributions} />
         ))}        
       </div>
+      <PageFooter/>
     </div>
   );
 }

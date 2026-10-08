@@ -110,6 +110,7 @@
 
 .image_container {
     display: flex;
-    padding-bottom: 1rem;
     margin: auto;
+    margin-bottom: 20px;
+    box-shadow: 10px 10px 20px black;
 }

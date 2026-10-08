@@ -8,7 +8,7 @@ import PresetmapPage from './pages/presetmap_page/presetmap_page';
 import AboutPage from './pages/about_page/about_page';
 import PolicyPage from './pages/policy_page/policy_page';
 
-import PageFooter from './components/page_footer/footer';
+// import PageFooter from './components/page_footer/footer';
 import Navbar from './components/navbar/navbar';
 
 import dirtBackground from "/blocks/dirt.png";

@@ -20,7 +20,8 @@ export default function AlgorithmSelector({algorithm, onChange}: AlgorithmSelect
                 <option value="ids">Iterative Deepening Search (IDS)</option>
                 <option value="ucs">Uniform Cost Search (UCS)</option>
                 <option value="astar">A* Search</option>
-                <option value="weighted-astar">Weighted A* Search</option>
+                <option value="weighted-astar-3">Weighted A* Search (3x)</option>
+                <option value="weighted-astar-8">Weighted A* Search (8x)</option>
                 <option value="gbfs">Greedy Best-First Search</option>
             </select>
         </div>

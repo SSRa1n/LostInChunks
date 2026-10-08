@@ -9,7 +9,7 @@ import { UniformCostSearch } from '../algorithms/ucs';
 import { IterativeDeepeningSearch } from '../algorithms/ids';
 import { BreadthFirstSearch } from '../algorithms/bfs';
 
-export type AlgorithmType = 'astar' | 'dfs' | 'weighted-astar' | 'gbfs' | 'ucs' | 'bfs' | 'ids';
+export type AlgorithmType = 'astar' | 'dfs' | 'weighted-astar-3' | 'weighted-astar-8' | 'gbfs' | 'ucs' | 'bfs' | 'ids';
 
 export function useMazeSearch(
     mazeData: MazeData, 
@@ -25,9 +25,13 @@ export function useMazeSearch(
             const heuristic = new MazeManhattanHeuristic(problem.goalState());
             const astar = new AStarSearch<MazeState, MazeAction>(heuristic);
             return astar.search(problem);
-        } else if (algorithmType === 'weighted-astar') {
+        } else if (algorithmType === 'weighted-astar-8') {
             const heuristic = new MazeManhattanHeuristic(problem.goalState());
             const astar = new AStarSearch<MazeState, MazeAction>(heuristic, 8);
+            return astar.search(problem);
+        } else if (algorithmType === 'weighted-astar-3') {
+            const heuristic = new MazeManhattanHeuristic(problem.goalState());
+            const astar = new AStarSearch<MazeState, MazeAction>(heuristic, 3);
             return astar.search(problem);
         } else if (algorithmType === 'gbfs') {
             const heuristic = new MazeManhattanHeuristic(problem.goalState());

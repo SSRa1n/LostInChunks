@@ -58,7 +58,8 @@ export default function ComparisonView({ mazeData, onRegenerate, showRegenButton
       case 'ids': return 'Iterative Deepening Search (IDS)'
       case 'ucs': return 'Uniform Cost Search (UCS)';
       case 'astar': return 'A* Search';
-      case 'weighted-astar': return 'Weighted A* Search';
+      case 'weighted-astar-3': return 'Weighted A* Search (3x)';
+      case 'weighted-astar-8': return 'Weighted A* Search (8x)';
       case 'gbfs': return 'Greedy Best-First Search';
       default: return type;
     }

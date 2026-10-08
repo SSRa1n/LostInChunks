@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import type { MazeOptions, MazeData } from '../../lib/generate_maze'
 
 import styles from "./maze_playground.module.css";
@@ -63,6 +63,7 @@ export default function MazePlayground({
     }));
     const [selectionTarget, setSelectionTarget] = useState<"start" | "goal" | null>(null);
     const [copied, setCopied] = useState(false);
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         setForm(prev => {
@@ -93,38 +94,20 @@ export default function MazePlayground({
         }));
     };
 
-    const generate = () => {
+    const buildCurrentOptions = (): { width: number; height: number; options: MazeOptions } => {
         const rawWidth = form.width === "" || isNaN(Number(form.width)) ? 15 : Number(form.width);
         const rawHeight = form.height === "" || isNaN(Number(form.height)) ? 11 : Number(form.height);
 
         const mazeWidth = toOddRange(rawWidth, 3, MAX_WIDTH);
         const mazeHeight = toOddRange(rawHeight, 3, MAX_HEIGHT);
 
-        setForm(prev => ({
-            ...prev,
-            width: mazeWidth,
-            height: mazeHeight,
-        }));
-
         const maxX = Math.max(1, mazeWidth - 2);
         const maxY = Math.max(1, mazeHeight - 2);
 
-        const options: MazeOptions = {
-            alternativePathChance: Math.min(
-                1,
-                Math.max(0, form.alternativePathChance)
-            ),
-
-            maxInfinitePathObstacles: Math.max(
-                0,
-                Math.floor(form.maxInfinitePathObstacles)
-            ),
-
-            obstacleDensityMultiplier: Math.max(
-                0,
-                form.obstacleDensityMultiplier
-            ),
-
+        const builtOptions: MazeOptions = {
+            alternativePathChance: Math.min(1, Math.max(0, form.alternativePathChance)),
+            maxInfinitePathObstacles: Math.max(0, Math.floor(form.maxInfinitePathObstacles)),
+            obstacleDensityMultiplier: Math.max(0, form.obstacleDensityMultiplier),
             startPosition: {
                 x: Math.min(Math.max(1, Math.floor(form.startX)), maxX),
                 y: Math.min(Math.max(1, Math.floor(form.startY)), maxY),
@@ -138,10 +121,70 @@ export default function MazePlayground({
         };
 
         if (form.seed.trim() !== "") {
-            options.seed = Math.floor(Number(form.seed));
+            builtOptions.seed = Math.floor(Number(form.seed));
         }
 
+        return { width: mazeWidth, height: mazeHeight, options: builtOptions };
+    };
+
+    const generate = () => {
+        const { width: mazeWidth, height: mazeHeight, options } = buildCurrentOptions();
+        setForm(prev => ({
+            ...prev,
+            width: mazeWidth,
+            height: mazeHeight,
+        }));
         onGenerate(mazeWidth, mazeHeight, options);
+    };
+
+    const exportConfig = () => {
+        const configData = {
+            ...buildCurrentOptions(),
+            activeSeed: mazeData.seed,
+        };
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(configData, null, 2));
+        const downloadAnchor = document.createElement('a');
+        downloadAnchor.setAttribute("href", dataStr);
+        downloadAnchor.setAttribute("download", "maze_config.json");
+        document.body.appendChild(downloadAnchor);
+        downloadAnchor.click();
+        downloadAnchor.remove();
+    };
+
+    const handleImportFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const fileReader = new FileReader();
+        if (e.target.files && e.target.files[0]) {
+            fileReader.readAsText(e.target.files[0], "UTF-8");
+            fileReader.onload = event => {
+                try {
+                    const parsed = JSON.parse(event.target?.result as string);
+                    if (parsed && typeof parsed.width === "number" && typeof parsed.height === "number" && parsed.options) {
+                        const opt = parsed.options;
+                        setForm({
+                            width: parsed.width,
+                            height: parsed.height,
+                            seed: opt.seed !== undefined ? String(opt.seed) : (parsed.activeSeed ? String(parsed.activeSeed) : ""),
+                            alternativePathChance: opt.alternativePathChance ?? 0.1,
+                            maxInfinitePathObstacles: opt.maxInfinitePathObstacles ?? 2,
+                            obstacleDensityMultiplier: opt.obstacleDensityMultiplier ?? 1,
+                            startX: opt.startPosition?.x ?? 1,
+                            startY: opt.startPosition?.y ?? parsed.height - 2,
+                            goalX: opt.goalPosition?.x ?? parsed.width - 2,
+                            goalY: opt.goalPosition?.y ?? 1,
+                            randomizeStart: opt.randomizeStart ?? false,
+                            randomizeGoal: opt.randomizeGoal ?? false,
+                        });
+                        onGenerate(parsed.width, parsed.height, opt);
+                    }
+                } catch (error) {
+                    console.error("Failed to parse maze config JSON:", error);
+                    alert("Invalid maze configuration file.");
+                }
+            };
+        }
+        if (fileInputRef.current) {
+            fileInputRef.current.value = "";
+        }
     };
 
     const randomizeSeed = () => {
@@ -235,6 +278,31 @@ export default function MazePlayground({
             <div className={styles.option_container}>
                 <div className={styles.header}>
                     <h2>Maze Generator</h2>
+                    <div className={styles.config_actions}>
+                        <input
+                            type="file"
+                            ref={fileInputRef}
+                            style={{ display: "none" }}
+                            accept=".json"
+                            onChange={handleImportFile}
+                        />
+                        <button
+                            type="button"
+                            className="counter"
+                            onClick={() => fileInputRef.current?.click()}
+                            title="Import configuration JSON"
+                        >
+                            Import Config
+                        </button>
+                        <button
+                            type="button"
+                            className="counter"
+                            onClick={exportConfig}
+                            title="Export configuration JSON"
+                        >
+                            Export Config
+                        </button>
+                    </div>
                     <div className={styles.seed_container}>
                         <small>Active Seed: {mazeData.seed}</small>
                         <button

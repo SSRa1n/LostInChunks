@@ -217,3 +217,13 @@
     color: lightgreen;
     line-height: 1;
 }
+
+.config_actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.config_actions button {
+    font-size: 0.8rem;
+    cursor: pointer;
+}

@@ -13,7 +13,7 @@
         "github": "https://github.com/SSRa1n",
         "quote": "Full marks just from the navbar icon alone",
         "position": "Frontend Developer",
-        "contributions": ["Maze Design", "Video"]
+        "contributions": ["Maze Design", "Video Editor"]
     },
     {
         "name": "YwThammatorn",
@@ -21,22 +21,22 @@
         "github": "https://github.com/YwThammatorn",
         "quote": "Statement so profound he had a commit dedicated to him",
         "position": "Frontend Developer",
-        "contributions": ["???"]
+        "contributions": ["UI Consultant","Video Editor"]
     },
     {
         "name": "Bright-47",
         "image": "https://cdn.discordapp.com/avatars/606003466728636439/af9ae72d83cee091266fe316bbc5ac1e.png?size=256",
         "github": "https://github.com/Bright-47",
-        "quote": "???",
-        "position": "???",
-        "contributions": ["???"]
+        "quote": "Toddler’s interpreter",
+        "position": "Frontend Developer",
+        "contributions": ["Problem outliner"]
     },
     {
         "name": "Onakice",
         "image": "https://avatars.githubusercontent.com/u/175036240",
         "github": "https://github.com/Onakice",
-        "quote": "???",
-        "position": "???",
-        "contributions": ["???"]
+        "quote": "Backdrop developer",
+        "position": "Backend Developer",
+        "contributions": ["UI Design", "Emotional Support"]
     }
 ]
